@@ -1,0 +1,10 @@
+[project]
+name = "project-michelin"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.14"
+dependencies = [
+    "jupyter>=1.1.1",
+    "kagglehub>=1.0.2",
+    "pandas>=3.0.3",
+]
