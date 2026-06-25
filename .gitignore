@@ -1,0 +1,13 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local data and downloaded/cached source inputs must not be committed.
+data/
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.jsonl

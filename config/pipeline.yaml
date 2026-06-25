@@ -1,0 +1,49 @@
+project:
+  name: michelin-taiwan-starred-classifier
+  geography: Taipei
+  scope: portfolio_v1
+
+seed: 20260225
+
+labels:
+  positive_class: Starred
+  negative_class: not Starred
+  starred_awards:
+    - 1 Star
+    - 2 Stars
+    - 3 Stars
+  hard_negative_awards:
+    - Bib Gourmand
+    - Selected Restaurants
+
+groups:
+  in_sample: in_sample
+  out_of_sample: out_of_sample
+
+split:
+  strategy: stratified_holdout
+  test_size: 0.2
+  cv_strategy: stratified_k_fold
+  cv_folds: 5
+
+models:
+  explanation: logistic_regression
+  prediction: lightweight_gbm
+
+threshold:
+  calibration: platt_or_isotonic
+  similar_to_starred_cutoff: 0.5
+
+data_sources:
+  guide_primary: michelin-my-maps
+  guide_crosscheck: wikipedia
+  ordinary_base: openstreetmap
+  enrichment_provider: uniform_provider_pipeline
+
+pools:
+  ordinary_in_sample: bounded
+  ordinary_out_of_sample: bounded
+
+outputs:
+  docs_data_dir: docs/data
+  reports_dir: reports

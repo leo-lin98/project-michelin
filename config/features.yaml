@@ -1,0 +1,25 @@
+feature_schema:
+  numeric:
+    - price_level
+    - average_rating
+    - review_count
+    - neighborhood_density
+  categorical:
+    - cuisine
+    - city
+  optional_text:
+    - review_text_features
+
+transforms:
+  numeric_imputer: median
+  numeric_scaler: standard
+  categorical_encoder: one_hot
+  text_vectorizer: none
+
+leakage_controls:
+  excluded_fields:
+    - Description
+    - FacilitiesAndServices
+    - Award
+  fit_transforms_on: train_only
+  require_feature_provenance_parity: true
