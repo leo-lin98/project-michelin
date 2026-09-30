@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from datetime import datetime
 import json
 from pathlib import Path
+from tempfile import mkdtemp
 from typing import Literal
 
 import duckdb
@@ -214,6 +215,39 @@ def read_bounded_features(
 
 
 def export_database_panel(
+    database_path: Path, guide_path: Path, mapping_path: Path, output_dir: Path, config: PipelineConfig,
+) -> dict[str, int]:
+    """Invalidate previous outputs before rebuilding; failed attempts publish no final panel."""
+    archive_panel_outputs(output_dir)
+    try:
+        return build_database_panel(database_path, guide_path, mapping_path, output_dir, config)
+    except Exception:
+        archive_panel_outputs(output_dir)
+        raise
+
+
+def archive_panel_outputs(output_dir: Path) -> None:
+    """Preserve prior or partial panel files away from downstream input paths."""
+    paths = (
+        Path("processed/labeled_restaurants.csv"),
+        Path("processed/panel_summary.json"),
+        Path("processed/panel_manifest.json"),
+        Path("interim/identity_aliases.csv"),
+        Path("interim/panel_dlq.csv"),
+    )
+    existing = tuple(path for path in paths if (output_dir / path).exists())
+    if not existing:
+        return
+    archive_root = output_dir / "interim" / "previous_panels"
+    archive_root.mkdir(parents=True, exist_ok=True)
+    archive_dir = Path(mkdtemp(prefix="panel-", dir=archive_root))
+    for path in existing:
+        archived_path = archive_dir / path
+        archived_path.parent.mkdir(parents=True, exist_ok=True)
+        (output_dir / path).rename(archived_path)
+
+
+def build_database_panel(
     database_path: Path, guide_path: Path, mapping_path: Path, output_dir: Path, config: PipelineConfig,
 ) -> dict[str, int]:
     """Export local modeling data only after every scoped Guide entry has shared features."""

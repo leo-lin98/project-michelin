@@ -5,6 +5,7 @@ import time
 from typing import Any
 
 import httpx
+from pydantic import ValidationError
 
 from restaurant_ingestion.models import PlaceDetails, PlaceSearchResponse
 
@@ -53,7 +54,7 @@ class PlacesClientError(RuntimeError):
         self.attempts = attempts
 
 
-class BudgetExceededError(RuntimeError):
+class BudgetExceededError(PlacesClientError):
     pass
 
 
@@ -129,7 +130,10 @@ class GooglePlacesClient:
             payload,
             request_budget_remaining,
         )
-        return PlaceSearchResponse.model_validate(response_json_value), attempts
+        try:
+            return PlaceSearchResponse.model_validate(response_json_value), attempts
+        except ValidationError as exc:
+            raise PlacesClientError("Google Places returned invalid search data", attempts) from exc
 
     def search_text_place_candidates(
         self,
@@ -150,7 +154,10 @@ class GooglePlacesClient:
             payload,
             request_budget_remaining,
         )
-        return PlaceSearchResponse.model_validate(response_json_value), attempts
+        try:
+            return PlaceSearchResponse.model_validate(response_json_value), attempts
+        except ValidationError as exc:
+            raise PlacesClientError("Google Places returned invalid search data", attempts) from exc
 
     def search_text_place_id_match_candidates(
         self,
@@ -186,7 +193,10 @@ class GooglePlacesClient:
             None,
             request_budget_remaining,
         )
-        return PlaceDetails.model_validate(response_json_value), response_json_value, attempts
+        try:
+            return PlaceDetails.model_validate(response_json_value), response_json_value, attempts
+        except ValidationError as exc:
+            raise PlacesClientError(f"Google Places returned invalid details for place_id={place_id}", attempts) from exc
 
     def _request(
         self,
@@ -206,7 +216,10 @@ class GooglePlacesClient:
         attempts: list[dict[str, int]] = []
 
         while retry_count <= self._max_retries:
-            ensure_request_budget(len(attempts), request_budget_remaining, 1)
+            try:
+                ensure_request_budget(len(attempts), request_budget_remaining, 1)
+            except BudgetExceededError as exc:
+                raise BudgetExceededError(str(exc), tuple(attempts)) from exc
             try:
                 response = self._client.request(method, url, headers=request_headers, json=json_body)
             except httpx.HTTPError as exc:
@@ -244,7 +257,7 @@ def response_json(response: httpx.Response, attempts: tuple[dict[str, int], ...]
 
 def ensure_request_budget(used: int, limit: int, requested: int) -> None:
     if used + requested > limit:
-        raise BudgetExceededError(f"Request budget exceeded: limit={limit}, used={used}, requested={requested}")
+        raise BudgetExceededError(f"Request budget exceeded: limit={limit}, used={used}, requested={requested}", ())
 
 
 def validate_no_atmosphere_fields(field_mask: tuple[str, ...]) -> None:

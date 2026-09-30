@@ -22,9 +22,8 @@ from restaurant_ingestion.config import (
     GOOGLE_RETRY_MAX_BACKOFF_SECONDS,
     PLACE_DETAILS_FIELD_MASK,
     PROGRESS_LOG_INTERVAL,
-    TARGET_ENRICHED_RESTAURANTS,
 )
-from restaurant_ingestion.ingestion.enrichment import plan_candidate_enrichment, run_candidate_enrichment
+from restaurant_ingestion.ingestion.enrichment import plan_restaurant_refresh, run_restaurant_refresh
 from restaurant_ingestion.storage.duckdb_store import DuckDbStore
 
 
@@ -44,7 +43,7 @@ def plan_refresh() -> dict[str, int]:
     store = DuckDbStore(DATABASE_PATH)
     try:
         store.create_schema()
-        return plan_candidate_enrichment(store, TARGET_ENRICHED_RESTAURANTS, DETAILS_REFRESH_TTL_DAYS)
+        return plan_restaurant_refresh(store, DETAILS_REFRESH_TTL_DAYS, DETAILS_REQUEST_BUDGET)
     finally:
         store.close()
 
@@ -54,10 +53,9 @@ def run_refresh() -> dict[str, int]:
     client = build_client()
     try:
         store.create_schema()
-        return run_candidate_enrichment(
+        return run_restaurant_refresh(
             client,
             store,
-            TARGET_ENRICHED_RESTAURANTS,
             DETAILS_REFRESH_TTL_DAYS,
             DETAILS_REQUEST_BUDGET,
             PLACE_DETAILS_FIELD_MASK,

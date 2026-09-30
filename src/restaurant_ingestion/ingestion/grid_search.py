@@ -1,6 +1,6 @@
 """Taipei tiled discovery using Google Text Search IDs-only calls."""
 
-from restaurant_ingestion.clients.google_places import GooglePlacesClient, PlacesClientError, ensure_request_budget
+from restaurant_ingestion.clients.google_places import BudgetExceededError, GooglePlacesClient, PlacesClientError, ensure_request_budget
 from restaurant_ingestion.ingestion.checkpoints import FAILED, RUNNING, SUCCEEDED, search_checkpoint
 from restaurant_ingestion.ingestion.progress import print_crossed_request_progress
 from restaurant_ingestion.storage.duckdb_store import DuckDbStore
@@ -79,7 +79,11 @@ def run_taipei_discovery(
             while True:
                 checkpoint_id, payload_json = search_checkpoint(query, tile_index, page_index, rectangle)
                 if store.checkpoint_status(checkpoint_id) == SUCCEEDED:
-                    break
+                    page_token = store.checkpoint_page_token(checkpoint_id)
+                    if page_token is None:
+                        break
+                    page_index += 1
+                    continue
                 ensure_request_budget(used_requests, discovery_request_budget, 1)
                 store.upsert_checkpoint(checkpoint_id, "search_page", RUNNING, payload_json, page_token, None)
                 try:
@@ -134,6 +138,8 @@ def run_taipei_discovery(
                     )
                     requests_made += len(exc.attempts)
                     store.upsert_checkpoint(checkpoint_id, "search_page", FAILED, payload_json, page_token, str(exc))
+                    if isinstance(exc, BudgetExceededError):
+                        raise
                     break
                 except Exception as exc:
                     store.upsert_checkpoint(checkpoint_id, "search_page", FAILED, payload_json, page_token, str(exc))

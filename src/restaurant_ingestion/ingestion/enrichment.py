@@ -3,7 +3,7 @@
 import hashlib
 import json
 
-from restaurant_ingestion.clients.google_places import GooglePlacesClient, PlacesClientError, ensure_request_budget
+from restaurant_ingestion.clients.google_places import BudgetExceededError, GooglePlacesClient, PlacesClientError, ensure_request_budget
 from restaurant_ingestion.ingestion.checkpoints import FAILED, RUNNING, SUCCEEDED, detail_checkpoint
 from restaurant_ingestion.ingestion.progress import print_crossed_request_progress
 from restaurant_ingestion.storage.duckdb_store import DuckDbStore
@@ -26,6 +26,42 @@ def run_candidate_enrichment(
 ) -> dict[str, int]:
     remaining = max(target_enriched_restaurants - store.enriched_restaurant_count(), 0)
     place_ids = store.unenriched_candidate_ids(remaining, details_refresh_ttl_days)
+    return enrich_place_ids(
+        client, store, tuple(place_ids), details_request_budget, place_details_field_mask, progress_log_interval,
+    )
+
+
+def plan_restaurant_refresh(
+    store: DuckDbStore, details_refresh_ttl_days: int, details_request_budget: int,
+) -> dict[str, int]:
+    remaining_requests = max(details_request_budget - store.api_call_count("place_details_enterprise_no_atmosphere"), 0)
+    place_ids = store.stale_restaurant_ids(remaining_requests, details_refresh_ttl_days)
+    return {"refresh_details_requests": len(place_ids)}
+
+
+def run_restaurant_refresh(
+    client: GooglePlacesClient,
+    store: DuckDbStore,
+    details_refresh_ttl_days: int,
+    details_request_budget: int,
+    place_details_field_mask: tuple[str, ...],
+    progress_log_interval: int,
+) -> dict[str, int]:
+    remaining_requests = max(details_request_budget - store.api_call_count("place_details_enterprise_no_atmosphere"), 0)
+    place_ids = store.stale_restaurant_ids(remaining_requests, details_refresh_ttl_days)
+    return enrich_place_ids(
+        client, store, tuple(place_ids), details_request_budget, place_details_field_mask, progress_log_interval,
+    )
+
+
+def enrich_place_ids(
+    client: GooglePlacesClient,
+    store: DuckDbStore,
+    place_ids: tuple[str, ...],
+    details_request_budget: int,
+    place_details_field_mask: tuple[str, ...],
+    progress_log_interval: int,
+) -> dict[str, int]:
     used_requests = store.api_call_count("place_details_enterprise_no_atmosphere")
     enriched_count = 0
     failed_count = 0
@@ -69,6 +105,8 @@ def run_candidate_enrichment(
             )
             store.upsert_checkpoint(checkpoint_id, "place_details", FAILED, payload_json, None, str(exc))
             failed_count += 1
+            if isinstance(exc, BudgetExceededError):
+                raise
         except Exception as exc:
             store.upsert_checkpoint(checkpoint_id, "place_details", FAILED, payload_json, None, str(exc))
             failed_count += 1

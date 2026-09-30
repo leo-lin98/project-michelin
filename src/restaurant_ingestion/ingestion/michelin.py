@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from restaurant_ingestion.clients.google_places import GooglePlacesClient, PlacesClientError, ensure_request_budget
+from restaurant_ingestion.clients.google_places import BudgetExceededError, GooglePlacesClient, PlacesClientError, ensure_request_budget
 from restaurant_ingestion.ingestion.progress import print_crossed_request_progress
 from restaurant_ingestion.storage.duckdb_store import DuckDbStore
 
@@ -82,6 +82,8 @@ def run_michelin_csv_enrichment(
                 progress_log_interval,
             )
             failed_count += 1
+            if isinstance(exc, BudgetExceededError):
+                raise
         except Exception:
             failed_count += 1
     return {

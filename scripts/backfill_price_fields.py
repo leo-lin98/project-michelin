@@ -76,6 +76,7 @@ def backfill_prices(
 ) -> dict[str, int]:
     """Re-fetch each sampled place and report what the refresh changed."""
     used_requests = 0
+    logged_requests = store.api_call_count("place_details_enterprise_no_atmosphere")
     processed = 0
     started_at = time.monotonic()
     print_request_progress("price-backfill", processed, len(price_state), 0.0)
@@ -107,7 +108,8 @@ def backfill_prices(
                 PLACE_DETAILS_FIELD_MASK,
                 request_budget - used_requests,
             )
-            log_detail_attempts(store, place_id, checkpoint_id, attempts, used_requests)
+            log_detail_attempts(store, place_id, checkpoint_id, attempts, logged_requests)
+            logged_requests += len(attempts)
             used_requests += len(attempts)
             raw_json = json.dumps(raw_response, sort_keys=True, separators=(",", ":"))
             response_hash = hashlib.sha256(raw_json.encode("utf-8")).hexdigest()
@@ -117,10 +119,14 @@ def backfill_prices(
             for outcome in price_outcome(previous_price_level, place.priceLevel, place.priceRange):
                 counts[outcome] += 1
         except PlacesClientError as exc:
-            log_detail_attempts(store, place_id, checkpoint_id, exc.attempts, used_requests)
+            log_detail_attempts(store, place_id, checkpoint_id, exc.attempts, logged_requests)
+            logged_requests += len(exc.attempts)
             used_requests += len(exc.attempts)
             store.upsert_checkpoint(checkpoint_id, "place_details", FAILED, payload_json, None, str(exc))
             counts["failed"] += 1
+            if isinstance(exc, BudgetExceededError):
+                counts["budget_exhausted"] = 1
+                break
         except Exception as exc:
             store.upsert_checkpoint(checkpoint_id, "place_details", FAILED, payload_json, None, str(exc))
             counts["failed"] += 1

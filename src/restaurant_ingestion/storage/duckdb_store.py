@@ -170,6 +170,19 @@ class DuckDbStore:
         ).fetchall()
         return [str(row[0]) for row in rows]
 
+    def stale_restaurant_ids(self, limit: int, stale_after_days: int) -> list[str]:
+        stale_cutoff = now_utc() - timedelta(days=stale_after_days)
+        rows = self._connection.execute(
+            """
+            SELECT place_id FROM restaurants
+            WHERE last_updated < ?
+            ORDER BY last_updated, place_id
+            LIMIT ?
+            """,
+            [stale_cutoff, limit],
+        ).fetchall()
+        return [str(row[0]) for row in rows]
+
     def stale_or_missing_place_ids(self, place_ids: tuple[str, ...], stale_after_days: int) -> list[str]:
         unique_place_ids = tuple(dict.fromkeys(place_ids))
         if not unique_place_ids:
@@ -444,6 +457,15 @@ class DuckDbStore:
             [checkpoint_id],
         ).fetchone()
         if row is None:
+            return None
+        return str(row[0])
+
+    def checkpoint_page_token(self, checkpoint_id: str) -> str | None:
+        row = self._connection.execute(
+            "SELECT page_token FROM ingestion_checkpoints WHERE checkpoint_id = ?",
+            [checkpoint_id],
+        ).fetchone()
+        if row is None or row[0] is None:
             return None
         return str(row[0])
 
