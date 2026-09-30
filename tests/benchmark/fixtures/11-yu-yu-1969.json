@@ -1,0 +1,182 @@
+{
+  "name": "Yu Yu 1969",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "有有1969"
+            },
+            "formattedAddress": "No. 48號, Liaoning St, Lixing Village, Zhongshan District, Taipei City, 104",
+            "id": "ChIJUVfSk46rQjQRjSYEdTmKW8Q",
+            "internationalPhoneNumber": "+886 2 2776 0443",
+            "location": {
+              "latitude": 25.049029599999997,
+              "longitude": 121.54207199999999
+            },
+            "nationalPhoneNumber": "02 2776 0443",
+            "primaryType": "chinese_restaurant",
+            "types": [
+              "taiwanese_restaurant",
+              "chinese_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "http://有有1969.com/?utm_source=gmb&utm_medium=referral"
+          },
+          {
+            "displayName": {
+              "languageCode": "zh",
+              "text": "有有1969-二店"
+            },
+            "formattedAddress": "104, Taipei City, Zhongshan District, Lixing Village, ChangAn East Rd Section 2, 171之9號號1樓",
+            "id": "ChIJvyd3SI2rQjQRHdxggyqT7uo",
+            "internationalPhoneNumber": "+886 2 2777 3843",
+            "location": {
+              "latitude": 25.0485625,
+              "longitude": 121.5420398
+            },
+            "nationalPhoneNumber": "02 2777 3843",
+            "primaryType": "restaurant",
+            "types": [
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.facebook.com/share/QeZu8LyK5T4XZRAD/?mibextid=LQQJ4d"
+          }
+        ]
+      },
+      "text_query": "Yu Yu 1969, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "有有1969"
+            },
+            "formattedAddress": "No. 48號, Liaoning St, Lixing Village, Zhongshan District, Taipei City, 104",
+            "id": "ChIJUVfSk46rQjQRjSYEdTmKW8Q",
+            "internationalPhoneNumber": "+886 2 2776 0443",
+            "location": {
+              "latitude": 25.049029599999997,
+              "longitude": 121.54207199999999
+            },
+            "nationalPhoneNumber": "02 2776 0443",
+            "primaryType": "chinese_restaurant",
+            "types": [
+              "taiwanese_restaurant",
+              "chinese_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "http://有有1969.com/?utm_source=gmb&utm_medium=referral"
+          },
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Check Inn Taipei Nanjing Hotel"
+            },
+            "formattedAddress": "No. 16號, Section 3, Nanjing E Rd, Lixing Village, Zhongshan District, Taipei City, 10491",
+            "id": "ChIJuzoEuherQjQRcwTba8qaers",
+            "internationalPhoneNumber": "+886 2 2516 1610",
+            "location": {
+              "latitude": 25.051741,
+              "longitude": 121.5376
+            },
+            "nationalPhoneNumber": "02 2516 1610",
+            "primaryType": "hotel",
+            "types": [
+              "hotel",
+              "lodging",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.checkinn.com.tw/?page_id=4950"
+          },
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "K Hotel Taipei Nanjing"
+            },
+            "formattedAddress": "No. 333號, Section 3, Nanjing E Rd, Zhongzheng Village, Songshan District, Taipei City, 105",
+            "id": "ChIJDaNg8eerQjQR2WM6DWnGXGU",
+            "internationalPhoneNumber": "+886 2 2719 6666",
+            "location": {
+              "latitude": 25.0520654,
+              "longitude": 121.54740419999999
+            },
+            "nationalPhoneNumber": "02 2719 6666",
+            "primaryType": "hotel",
+            "types": [
+              "hotel",
+              "lodging",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://nanjing.khotels.com.tw/zh-TW"
+          },
+          {
+            "displayName": {
+              "languageCode": "zh",
+              "text": "有有1969-二店"
+            },
+            "formattedAddress": "104, Taipei City, Zhongshan District, Lixing Village, ChangAn East Rd Section 2, 171之9號號1樓",
+            "id": "ChIJvyd3SI2rQjQRHdxggyqT7uo",
+            "internationalPhoneNumber": "+886 2 2777 3843",
+            "location": {
+              "latitude": 25.0485625,
+              "longitude": 121.5420398
+            },
+            "nationalPhoneNumber": "02 2777 3843",
+            "primaryType": "restaurant",
+            "types": [
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.facebook.com/share/QeZu8LyK5T4XZRAD/?mibextid=LQQJ4d"
+          },
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Green World Hotel Grand Nanjing"
+            },
+            "formattedAddress": "No. 8號, Section 3, Nanjing E Rd, Lixing Village, Zhongshan District, Taipei City, 104",
+            "id": "ChIJC5MVht-rQjQRxxzSSlMkrj0",
+            "internationalPhoneNumber": "+886 2 2509 8882",
+            "location": {
+              "latitude": 25.051777899999998,
+              "longitude": 121.53734630000001
+            },
+            "nationalPhoneNumber": "02 2509 8882",
+            "primaryType": "hotel",
+            "types": [
+              "hotel",
+              "lodging",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "http://grandnanjing.greenworldhotels.com/"
+          }
+        ]
+      },
+      "text_query": "Yu Yu 1969, 48 Liaoning Street, Zhongshan District, Taipei, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "11-yu-yu-1969"
+}

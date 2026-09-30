@@ -2,7 +2,7 @@
 
 from enum import StrEnum
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
@@ -24,7 +24,7 @@ class StrictModel(BaseModel):
 
 class ProjectConfig(StrictModel):
     name: str
-    geography: str
+    geography: tuple[Literal["Taipei", "New Taipei"], ...] = Field(min_length=1)
     scope: str
 
 
@@ -83,6 +83,29 @@ class DataSourceConfig(StrictModel):
 class PoolConfig(StrictModel):
     ordinary_in_sample: str
     ordinary_out_of_sample: str
+    ordinary_in_sample_limit: int = Field(gt=0)
+    ordinary_out_of_sample_limit: int = Field(gt=0)
+
+
+class PathConfig(StrictModel):
+    raw_guide_dir: Path
+    raw_enrichment_dir: Path
+    interim_dir: Path
+    processed_dir: Path
+
+
+class SnapshotConfig(StrictModel):
+    feature_snapshot_policy: Literal["per_record_fetched_at"]
+
+
+class EligibilityConfig(StrictModel):
+    business_statuses: tuple[Literal["OPERATIONAL", "CLOSED_TEMPORARILY", "CLOSED_PERMANENTLY", "FUTURE_OPENING"] | None, ...] = Field(min_length=1)
+    missing_features: Literal["preserve_null_for_phase_2"]
+    unresolved_guide_exclusions: tuple[str, ...] = ()
+
+
+class ValidationConfig(StrictModel):
+    published_reconciliation: Literal["deferred"]
 
 
 class OutputConfig(StrictModel):
@@ -100,6 +123,10 @@ class PipelineConfig(StrictModel):
     threshold: ThresholdConfig
     data_sources: DataSourceConfig
     pools: PoolConfig
+    paths: PathConfig
+    snapshots: SnapshotConfig
+    eligibility: EligibilityConfig
+    validation: ValidationConfig
     outputs: OutputConfig
 
 

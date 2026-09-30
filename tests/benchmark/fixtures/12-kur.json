@@ -1,0 +1,64 @@
+{
+  "name": "KUR",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "KUR"
+            },
+            "formattedAddress": "106, Taipei City, Da’an District, Dunhuang Village, Lane 109, Section 1, Anhe Rd, 6號1樓",
+            "id": "ChIJ5TE_dLKrQjQR84JuWHrbnFE",
+            "location": {
+              "latitude": 25.0355559,
+              "longitude": 121.55318609999999
+            },
+            "primaryType": "restaurant",
+            "types": [
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://kur.tw/"
+          }
+        ]
+      },
+      "text_query": "KUR, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "logy"
+            },
+            "formattedAddress": "114, Taipei City, Neihu District, Gangqian Village, Lane 258, Ruiguang Rd, 39號1F",
+            "id": "ChIJNWCqhOGrQjQR_4bJNRZ8uM0",
+            "location": {
+              "latitude": 25.0749007,
+              "longitude": 121.57481539999999
+            },
+            "primaryType": "fine_dining_restaurant",
+            "types": [
+              "fine_dining_restaurant",
+              "asian_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://logy.tw/"
+          }
+        ]
+      },
+      "text_query": "KUR, 6, Lane 109, Section 1, Anhe Road, Da'an District, Taipei, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "12-kur"
+}

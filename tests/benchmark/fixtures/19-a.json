@@ -1,0 +1,62 @@
+{
+  "name": "A",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Taipei"
+            },
+            "formattedAddress": "Taipei",
+            "id": "ChIJmQrivHKsQjQR4MIK3c41aj8",
+            "location": {
+              "latitude": 25.0329694,
+              "longitude": 121.5654177
+            },
+            "types": [
+              "colloquial_area",
+              "locality",
+              "political"
+            ]
+          }
+        ]
+      },
+      "text_query": "A, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "Restaurant A"
+            },
+            "formattedAddress": "106, Taipei City, Da’an District, Yicun Village, Section 3, Zhongxiao E Rd, 282號新光三越Diamond Towers 二館4樓四樓",
+            "id": "ChIJt2exNxurQjQROcDnwKLeXA4",
+            "internationalPhoneNumber": "+886 2 2721 8088",
+            "location": {
+              "latitude": 25.0414216,
+              "longitude": 121.5426945
+            },
+            "nationalPhoneNumber": "02 2721 8088",
+            "primaryType": "french_restaurant",
+            "types": [
+              "french_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://restaurant-a.com/"
+          }
+        ]
+      },
+      "text_query": "A, 4F, Building 2, Diamond Towers, Shin Kong Mitsukoshi, 282, Section 3, Zhongxiao East Road, Da'an District, Taipei, 106, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "19-a"
+}

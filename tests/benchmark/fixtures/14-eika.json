@@ -1,0 +1,68 @@
+{
+  "name": "Eika",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "EIKA 盈科"
+            },
+            "formattedAddress": "No. 58號, Minle St, Dayou Village, Datong District, Taipei City, 103",
+            "id": "ChIJnaykAxWpQjQRnSZt6p0IkUU",
+            "internationalPhoneNumber": "+886 2 2550 6863",
+            "location": {
+              "latitude": 25.057478699999997,
+              "longitude": 121.51051539999999
+            },
+            "nationalPhoneNumber": "02 2550 6863",
+            "primaryType": "restaurant",
+            "types": [
+              "restaurant",
+              "japanese_restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://eika.tw/?fbclid=PAAaa5vly0OD6G8pNW-B6ydHqb_V8jxrpYygwgedWz-qUFufTzY4X83Km4NJE"
+          }
+        ]
+      },
+      "text_query": "Eika, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "EIKA 盈科"
+            },
+            "formattedAddress": "No. 58號, Minle St, Dayou Village, Datong District, Taipei City, 103",
+            "id": "ChIJnaykAxWpQjQRnSZt6p0IkUU",
+            "internationalPhoneNumber": "+886 2 2550 6863",
+            "location": {
+              "latitude": 25.057478699999997,
+              "longitude": 121.51051539999999
+            },
+            "nationalPhoneNumber": "02 2550 6863",
+            "primaryType": "restaurant",
+            "types": [
+              "restaurant",
+              "japanese_restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://eika.tw/?fbclid=PAAaa5vly0OD6G8pNW-B6ydHqb_V8jxrpYygwgedWz-qUFufTzY4X83Km4NJE"
+          }
+        ]
+      },
+      "text_query": "Eika, 58 Minle Street, Datong District, Taipei, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "14-eika"
+}

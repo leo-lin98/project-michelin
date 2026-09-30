@@ -1,0 +1,112 @@
+{
+  "name": "A Cut",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "A CUT Steakhouse"
+            },
+            "formattedAddress": "104105, Taipei City, Zhongshan District, Fuhua Village, Liaoning St, 177號2樓",
+            "id": "ChIJ-eTvMWipQjQRIzqciZ5uD5E",
+            "internationalPhoneNumber": "+886 2 2571 0389",
+            "location": {
+              "latitude": 25.052739499999998,
+              "longitude": 121.5421937
+            },
+            "nationalPhoneNumber": "02 2571 0389",
+            "primaryType": "restaurant",
+            "types": [
+              "steak_house",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.ambassador-hotels.com/tc/taipei/dining/a-cut-steakhouse#story"
+          }
+        ]
+      },
+      "text_query": "A Cut, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "A CUT Steakhouse"
+            },
+            "formattedAddress": "104105, Taipei City, Zhongshan District, Fuhua Village, Liaoning St, 177號2樓",
+            "id": "ChIJ-eTvMWipQjQRIzqciZ5uD5E",
+            "internationalPhoneNumber": "+886 2 2571 0389",
+            "location": {
+              "latitude": 25.052739499999998,
+              "longitude": 121.5421937
+            },
+            "nationalPhoneNumber": "02 2571 0389",
+            "primaryType": "restaurant",
+            "types": [
+              "steak_house",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.ambassador-hotels.com/tc/taipei/dining/a-cut-steakhouse#story"
+          },
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "AMBASSADOR Hotel Taipei"
+            },
+            "formattedAddress": "10491, Taipei City, Zhongshan District, Fuhua Village, Liaoning St, 177號2樓",
+            "id": "ChIJ-eTvMWipQjQRqQK0v2hnhSc",
+            "internationalPhoneNumber": "+886 2 2100 2100",
+            "location": {
+              "latitude": 25.053283699999998,
+              "longitude": 121.5425715
+            },
+            "nationalPhoneNumber": "02 2100 2100",
+            "primaryType": "hotel",
+            "types": [
+              "hotel",
+              "lodging",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.ambassador-hotels.com/tc/taipei"
+          },
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Guobin Chinese Restaurant"
+            },
+            "formattedAddress": "104105, Taipei City, Zhongshan District, Fuhua Village, Liaoning St, 177號2F",
+            "id": "ChIJ1-3vMWipQjQRBLFbaenfHbA",
+            "internationalPhoneNumber": "+886 2 2536 2370",
+            "location": {
+              "latitude": 25.052739499999998,
+              "longitude": 121.5421937
+            },
+            "nationalPhoneNumber": "02 2536 2370",
+            "primaryType": "restaurant",
+            "types": [
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.ambassador-hotels.com/tc/taipei/dining/szechuan-court#story"
+          }
+        ]
+      },
+      "text_query": "A Cut, 2F, Fubon Liaoning Building, 177 Liaoning Street, Zhongshan District, Taipei, 104105, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "03-a-cut"
+}

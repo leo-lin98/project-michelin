@@ -1,0 +1,11 @@
+row_id,name,expected_outcome,expected_place_id,evidence
+01-junto,JUNTO,place_id,ChIJSxNePs-pQjQRn3kFHsWNoIQ,name JUNTO + website juntorestaurant.com + phone match; other candidate is the host hotel (The Blue by Just Inn)
+02-fumée,fumée,place_id,ChIJPzoQ34GpQjQRqvsYw1SAsZs,"distinctive name 'fumée' matches 'fumée Yakitori', restaurant in the Regent area; other candidate is the Regent hotel"
+03-a-cut,A Cut,place_id,ChIJ-eTvMWipQjQRIzqciZ5uD5E,name 'A Cut' is the core of 'A CUT Steakhouse' + phone 02-2571-0389 exact; other candidates are the Ambassador hotel and a different restaurant
+04-unnamed-clay-oven-roll,Unnamed Clay Oven Roll,place_id,ChIJ56-COrupQjQRggNd7rtSK1U,"exact name + 1m, at the named Nanjichang Night Market; other candidate is the market container itself"
+05-lin-ju,Lin Ju,place_id,ChIJdzWfNISrQjQRAMML2V8XENY,website linju.com.tw + phone 02-2712-2700 exact; local name 麟聚; other candidate is the host hotel (Illume)
+06-page,Page,place_id,ChIJyQU1ZgWsQjQR5kN2WtEzKtU,"name core of 'Restaurant Page' + website restaurant-page.com + phone exact, 0m; other candidates are unrelated namesakes ~5km away"
+13-sushi-kajin,Sushi Kajin,place_id,ChIJF9ZCfACpQjQRcUsfeBx3B9M,exact name + website sushi-kajin.com + 8m (single candidate)
+14-eika,Eika,place_id,ChIJnaykAxWpQjQRnSZt6p0IkUU,name EIKA + website eika.tw + phone exact + 1m
+17-bencotto,Bencotto,place_id,ChIJmd5Mp-irQjQRDdakY2jb_IA,"exact name 'Bencotto' + phone exact, italian_restaurant in Mandarin Oriental"
+19-a,A,place_id,ChIJt2exNxurQjQROcDnwKLeXA4,"name 'A' is the core of 'Restaurant A' + website restaurant-a.com + phone exact, 1m; other candidate is a 'Taipei' geocode"
