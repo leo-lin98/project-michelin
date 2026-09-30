@@ -1,0 +1,67 @@
+{
+  "name": "Rong Ju",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Rong Ju"
+            },
+            "formattedAddress": "105021, Taipei City, Songshan District, Zhonghua Village, DunHua N Rd, 139號一樓",
+            "id": "ChIJs-PERFKrQjQRCTx394uPC7U",
+            "internationalPhoneNumber": "+886 2 7709 6868",
+            "location": {
+              "latitude": 25.0524611,
+              "longitude": 121.54987489999999
+            },
+            "nationalPhoneNumber": "02 7709 6868",
+            "primaryType": "chinese_restaurant",
+            "types": [
+              "chinese_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://capellahotels.com/zh-tc/capella-taipei/dining/rong-ju"
+          }
+        ]
+      },
+      "text_query": "Rong Ju, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Capella Taipei"
+            },
+            "formattedAddress": "No. 139, DunHua N Rd, Zhongzheng Village, Songshan District, Taipei City, 105",
+            "id": "ChIJTyLpHACrQjQRgMpF_-zRxVw",
+            "internationalPhoneNumber": "+886 2 7709 6868",
+            "location": {
+              "latitude": 25.053239299999998,
+              "longitude": 121.54992299999999
+            },
+            "nationalPhoneNumber": "02 7709 6868",
+            "primaryType": "hotel",
+            "types": [
+              "hotel",
+              "lodging",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://capellahotels.com/zh-tc/capella-taipei?utm_source=google&utm_medium=organic&utm_campaign=gbp_cptpe"
+          }
+        ]
+      },
+      "text_query": "Rong Ju, Capella, 139 Dunhua North Road, Songshan District, Taipei, 105021, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "08-rong-ju"
+}

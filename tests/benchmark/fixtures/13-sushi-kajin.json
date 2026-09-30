@@ -1,0 +1,64 @@
+{
+  "name": "Sushi Kajin",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Sushi Kajin"
+            },
+            "formattedAddress": "No. 28號, Jilin Rd, Xingya Village, Zhongshan District, Taipei City, 10491",
+            "id": "ChIJF9ZCfACpQjQRcUsfeBx3B9M",
+            "location": {
+              "latitude": 25.051596699999997,
+              "longitude": 121.52991759999999
+            },
+            "primaryType": "japanese_restaurant",
+            "types": [
+              "japanese_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.sushi-kajin.com/"
+          }
+        ]
+      },
+      "text_query": "Sushi Kajin, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Sushi Kajin"
+            },
+            "formattedAddress": "No. 28號, Jilin Rd, Xingya Village, Zhongshan District, Taipei City, 10491",
+            "id": "ChIJF9ZCfACpQjQRcUsfeBx3B9M",
+            "location": {
+              "latitude": 25.051596699999997,
+              "longitude": 121.52991759999999
+            },
+            "primaryType": "japanese_restaurant",
+            "types": [
+              "japanese_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.sushi-kajin.com/"
+          }
+        ]
+      },
+      "text_query": "Sushi Kajin, 28 Jilin Road, Zhongshan District, Taipei, 104, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "13-sushi-kajin"
+}

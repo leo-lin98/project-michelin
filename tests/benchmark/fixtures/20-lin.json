@@ -1,0 +1,68 @@
+{
+  "name": "Lin",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Lin Restaurant"
+            },
+            "formattedAddress": "No. 6號, Alley 25, Lane 300, Section 4, Ren'ai Rd, Guangxin Village, Da’an District, Taipei City, 106",
+            "id": "ChIJsfXT_GmrQjQRtoFOTaD_L1g",
+            "internationalPhoneNumber": "+886 2 2368 7868",
+            "location": {
+              "latitude": 25.0357241,
+              "longitude": 121.5549215
+            },
+            "nationalPhoneNumber": "02 2368 7868",
+            "primaryType": "french_restaurant",
+            "types": [
+              "french_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "http://tinyurl.com/Lin-Restaurant"
+          }
+        ]
+      },
+      "text_query": "Lin, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Lin Restaurant"
+            },
+            "formattedAddress": "No. 6號, Alley 25, Lane 300, Section 4, Ren'ai Rd, Guangxin Village, Da’an District, Taipei City, 106",
+            "id": "ChIJsfXT_GmrQjQRtoFOTaD_L1g",
+            "internationalPhoneNumber": "+886 2 2368 7868",
+            "location": {
+              "latitude": 25.0357241,
+              "longitude": 121.5549215
+            },
+            "nationalPhoneNumber": "02 2368 7868",
+            "primaryType": "french_restaurant",
+            "types": [
+              "french_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "http://tinyurl.com/Lin-Restaurant"
+          }
+        ]
+      },
+      "text_query": "Lin, 6, Alley 25, Lane 300, Section 4, Ren’ai Road, Da’an District, Taipei, 106, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "20-lin"
+}

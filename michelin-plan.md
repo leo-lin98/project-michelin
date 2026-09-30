@@ -22,9 +22,9 @@ acceptable.
 The map shows two distinct groups, distinguished in the data and in the UI. This refines (does not
 undo) the out-of-fold (OOF) scoring of the modeling rows; it adds a genuinely out-of-sample display
 pool alongside them.
-- **In-sample group** — the ~10k bounded modeling rows (all Taipei Starred + all Bib/Selected + the
+- **In-sample group** — the bounded modeling rows (all Taipei + New Taipei Starred + all Bib/Selected + the
   bounded ordinary non-Guide pool). Every one was used to train/evaluate.
-- **Out-of-sample group** — ordinary non-Guide Taipei restaurants *outside* the ~10k, never used in
+- **Out-of-sample group** — ordinary non-Guide Taipei + New Taipei restaurants *outside* the modeling pool, never used in
   training or evaluation. By construction this group is **entirely unlabeled ordinary restaurants**:
   all Guide rows (Starred and Bib/Selected) already sit in the modeling sample, so there are **no
   out-of-sample positives**.
@@ -59,15 +59,17 @@ Two distinct pipelines:
   restaurants relative to the not-starred population.* This caveat travels with every
   importance/explanation surface so results are never misread as causal claims about inspector
   behavior.
-- **Current state:** the repo's `eda.py` is wired only to a *single-year 2021 global* Kaggle
-  snapshot (`ngshiheng/michelin-guide-restaurants-2021`). The labeled Starred(1)/not-Starred(0)
-  Taipei dataset the task requires **does not exist in the repo today** — so data sourcing is the
-  first and highest-risk build step.
+- **Current state (2026-09-11):** the ingestion database contains Google Places features and
+  160 classified Taipei Guide entries and four locally matched New Taipei Bib Gourmand entries.
+  The local Guide snapshot contains 38 New Taipei entries (15 Bib Gourmand, 23 Selected); the
+  remaining 34 need verified identities and shared features before the expanded panel can pass
+  its coverage gate. The database exporter checks the complete
+  scoped Guide snapshot, rather than assuming an untagged database row is an ordinary negative.
 - **Product vision (clarified with the human):** the not-starred class must combine a *broad,
   unbiased* ordinary sample with the *hard* Bib/Selected negatives — so the classifier learns what
   genuinely separates starred restaurants both from the general population and from their
   closest-but-unstarred peers.
-- **Intended outcome:** the GitHub Pages site is **just the interactive Taipei map** — click *or
+- **Intended outcome:** the GitHub Pages site is **just the interactive Taipei + New Taipei map** — click *or
   search* a restaurant → show its basic info; if the model deems it **similar to a Starred
   restaurant**, additionally surface the **top 5 features** that explain the resemblance. The
   analytical panels (binary **2×2** confusion matrix, global feature importance with the
@@ -75,18 +77,18 @@ Two distinct pipelines:
   they move to an **external write-up** (e.g. a Medium article) that consumes the Phase 7 result
   JSON.
 - **Goal & scope (decided):** this is a **portfolio / showcase** build — not a product or paper.
-  The binding limit is data, not engineering (~tens of starred Taipei rows vs a much larger
+  The binding limit is data, not engineering (~tens of starred Taipei + New Taipei rows vs a much larger
   not-starred class, and the same-feature-set constraint strips Michelin-internal signals), so the
   honest ceiling is modest and the project's *value is its rigor and candor*. The decision points
-  below are therefore **resolved for a scoped v1** (existing data only · Taipei-only · bounded
+  below are therefore **resolved for a scoped v1** (existing data only · Taipei + New Taipei · bounded
   sample); the broader ambitions are **parked as future work**, not deleted. Headline framing stays
   "how I avoided fooling myself, and exactly how strong/weak the signal is" — never a crystal ball.
 
 ## Resolved with the human (not open)
 
-- **Labeled universe:** class 1 = **all Taipei Starred restaurants** (1/2/3 Stars); class 0 =
-  **not Starred**, combining (a) a **large sample of ordinary non-Guide Taipei restaurants** from a
-  general source and (b) **all Taipei Bib Gourmand + Selected Restaurants** as a hard, high-quality
+- **Labeled universe:** class 1 = **all Taipei + New Taipei Starred restaurants** (1/2/3 Stars); class 0 =
+  **not Starred**, combining (a) a **large sample of ordinary non-Guide Taipei + New Taipei restaurants** from a
+  general source and (b) **all Taipei + New Taipei Bib Gourmand + Selected Restaurants** as a hard, high-quality
   negative set. Sample breadth/source surfaced as decision points below (tied to the class-0 source
   choice), not hard-coded.
 - **Confusion matrix shape:** **binary 2×2** — predicted {Starred, not} × actual {Starred, not}.
@@ -148,19 +150,17 @@ dashboard.
   a clicked restaurant clears it, the dashboard surfaces the top-5 explaining features. (Conformal
   ranked shortlist / wide prediction sets are parked.)
 
-**5. Class-0 source** — supplies the non-Guide restaurant sample and its features.
-- **Google Places/Maps** (rich: rating, review count, price band — but **not redistributable** in
-  a public static site → licensing blocker for baking data in). · **Yelp** (rich ratings/reviews;
-  ToS restricts redistribution). · **OpenStreetMap** (free, **redistributable** ODbL; sparse:
-  name/cuisine/geo, weak ratings). · Open government business / food-hygiene registry
-  (authoritative coverage; weak quality signal).
-- Tradeoff: signal richness vs (a) whether it can legally be **baked into a public static site**,
-  (b) payload weight on the latency budget. Google Places/Yelp are rich but **build-time-only** —
-  derived features may be served, raw licensed records may not.
-- **v1:** **OSM (ODbL) as the bakeable class-0 base**; Google Places / Yelp used **build-time
-  only** for richer rating/review/price features where licensing permits. Mass + live enrichment
-  and serving raw licensed records are parked (network/licensing/static-site tradeoffs analyzed
-  separately).
+**5. Class-0 source** — supplies the ordinary sample and its features.
+- **v1 (updated with the human): Google Places** is the ordinary discovery source and the
+  shared feature provider for the local modeling dataset. Reuse `data/restaurants.duckdb`;
+  OSM is no longer a Phase 1 modeling prerequisite. Do not label Google-derived data as OSM.
+- Every population uses Google rating, review count, price level, and primary type. `cuisine`
+  is explicitly a **Google primary-type category proxy**, not the Michelin cuisine taxonomy.
+  Retain that same category mapping for Guide rows, ordinary modeling rows, and display rows.
+- **Public-map delivery is a separate gate:** local modeling outputs are not automatically
+  approved for redistribution. Before Phase 7, establish which fields may be served and obtain
+  a suitable public display source where required. Do not assume transformed Google fields are
+  unrestricted. OSM remains a possible public display source, not the current modeling base.
 
 **6. Not-starred composition & breadth** — downstream of #5; the representativeness-vs-latency knob
 for the *ordinary* sub-population only (the Bib Gourmand + Selected hard negatives are a fixed,
@@ -170,8 +170,8 @@ fully-included set, not a sampling choice).
 - Tradeoff: maximal = most representative ordinary negatives but heaviest payload, worst imbalance
   (tens of starred rows vs tens of thousands), and a map needing WebGL clustering; narrower samples
   cut latency/payload but make the ordinary negatives less representative.
-- **v1:** **all Taipei Bib Gourmand + Selected (hard negatives) + a bounded ordinary non-Guide
-  Taipei sample**; the maximal ~40k ordinary pool is parked (payload / imbalance / clustering
+- **v1:** **all Taipei + New Taipei Bib Gourmand + Selected (hard negatives) + a bounded ordinary non-Guide
+  Taipei + New Taipei sample**; the maximal ~40k ordinary pool is parked (payload / imbalance / clustering
   cost).
 
 **7. Two-group map (in-sample evaluated vs out-of-sample demo).** The map shows the in-sample
@@ -197,13 +197,17 @@ artifacts, not judgments.)
   *and* provenance**. A provenance mismatch — or class-correlated field missingness — is a build
   error, not a degraded-but-acceptable case.
 
-**Methodological flag: geography / coverage confounder.** Taiwan guide geography expanded over
-time (2018 Taipei → 2020 +Taichung → 2022 +Tainan/Kaohsiung → 2025 +New Taipei/Hsinchu). Mixing
-cities makes "Starred" partly a function of *which cities the Guide covers* rather than restaurant
-characteristics. Handling: restrict to a single consistently-covered city, or add a
-"city-covered" indicator.
-- **v1 resolution:** model **only Taipei** (consistently covered since 2018) — removes the
-  confounder cleanly at the cost of a smaller sample. (The cross-year temporal aspect is parked.)
+**Methodological flag: geography / coverage confounder.**
+- **v1 resolution (updated with the human): Taipei and New Taipei are both in scope.** Retain
+  each restaurant's actual municipality; never collapse New Taipei into Taipei or include other
+  cities based on a search rectangle or a substring in a restaurant name.
+- Include **all Starred, Bib Gourmand, and Selected entries in both cities** from the chosen
+  Guide snapshot before treating the remaining restaurants as ordinary negatives. Verify the
+  snapshot edition and each city's coverage; a missing Guide mapping is a build error.
+- Geography remains a potential confounder: the local snapshot has 43 starred Taipei entries
+  and no starred New Taipei entries. Report class counts and missingness by city, examine the
+  city feature in Phase 2 EDA, and report city-specific evaluation slices. Do not describe the
+  expanded geography as having eliminated coverage bias or claim historical coverage parity.
 
 **Methodological flag: feature importance ≠ causation.** Every importance/explanation surface
 (the decisions here, the Phase 2 EDA, Phase 5, and the external write-up that presents the
@@ -291,7 +295,7 @@ project-michelin/
 │       ├── data/
 │       │   ├── sources.py      # Path A loaders (michelin-my-maps / kagglehub, Wikipedia)
 │       │   ├── scrape.py       # (PARKED v1) Path B fallback: guide.michelin.com/tw + Wayback
-│       │   ├── enrichment.py   # v1: uniform enrichment for ALL rows (guide + ordinary), one provider; OSM base; Places/Yelp build-time
+│       │   ├── enrichment.py   # v1: uniform enrichment for ALL rows (guide + ordinary), one provider; Google Places local modeling source
 │       │   ├── identity.py     # v1: minimal matching within guide + sample (at-scale PARKED)
 │       │   └── panel.py        # idempotent labeled (restaurant → class) dataset; MERGE/UPSERT; DLQ
 │       ├── features/
@@ -374,7 +378,7 @@ Defined in `config.py` and the stage modules; referenced across phases:
   are set in one place rather than hard-coded in modules.
 - `config/pipeline.yaml` — one global seed, label definition (Starred vs not), split strategy,
   model family (explanation + ONNX prediction), similar-to-Starred threshold, class-0 source(s),
-  not-starred composition/breadth, geography handling (Taipei-only).
+  not-starred composition/breadth, geography handling (Taipei + New Taipei).
 - `config/features.yaml` — feature list, encoders, scaling/imputation spec.
 
 ## Environment setup
@@ -427,11 +431,11 @@ and raises on a missing/invalid key.
 
 ## Objective
 
-Build the Michelin Taiwan labeled **Starred(1) / not-Starred(0)** dataset restricted to **Taipei**
-using **Path A (existing/published) only** (Path B scraping is parked). Class 1 = Taipei **Starred**
+Build the Michelin Taiwan labeled **Starred(1) / not-Starred(0)** dataset restricted to **Taipei and New Taipei**
+using **Path A (existing/published) only** (Path B scraping is parked). Class 1 = Taipei + New Taipei **Starred**
 restaurants (1/2/3 Stars; locate existing published data first; scraping is the fallback). Class 0 =
-**not Starred** = a bounded sample of ordinary non-Guide Taipei restaurants from a general source
-**plus** all Taipei **Bib Gourmand + Selected Restaurants** (the hard, high-quality negatives).
+**not Starred** = a bounded sample of ordinary non-Guide Taipei + New Taipei restaurants from a general source
+**plus** all Taipei + New Taipei **Bib Gourmand + Selected Restaurants** (the hard, high-quality negatives).
 Produce an idempotent labeled dataset whose class-1 (Starred) counts reconcile against published
 starred totals.
 
@@ -442,8 +446,9 @@ starred totals.
 ```
 src/michelin/data/
   sources.py        # Path A loaders (michelin-my-maps / kagglehub, Wikipedia)
-  enrichment.py     # uniform enrichment for ALL rows (guide + ordinary), one provider; OSM base; Places/Yelp build-time
+  enrichment.py     # uniform enrichment for ALL rows (guide + ordinary), one provider; Google Places local modeling source
   identity.py       # v1: minimal matching within guide + sample
+  database.py       # read-only DuckDB adapter, Guide coverage, bounded shared features
   panel.py          # idempotent labeled (restaurant → class) dataset; MERGE/UPSERT; DLQ
 data/raw/guide/       # guide snapshots, Star + Bib + Selected (Path A CSV/JSON)
 data/raw/enrichment/  # ordinary non-Guide sample snapshots
@@ -462,36 +467,101 @@ tests/test_identity.py
      Selected → class 0 hard negatives.** Verify whether it is a true per-year panel or
      current-state with a first-seen year.
    - Load Wikipedia "List of Michelin-starred restaurants in Taiwan" + news archives — cross-checks
-     the Taipei starred lists.
-1.2. **Class-0 ordinary sample + uniform enrichment** (`enrichment.py`): pull a bounded sample of
-   ordinary non-Guide Taipei restaurants from a general source — OSM (ODbL, bakeable) as the base,
-   with Google Places / Yelp used build-time-only for richer rating/review/price features where
-   licensing permits. **Enrich every row — Starred, Bib/Selected, and ordinary — through the
-   *identical* provider/pipeline** (match the guide rows from 1.1 to the same rating/review/price
-   source used for ordinary rows), so no field's presence or missingness can proxy the class
-   (decision #8). Together with the Bib/Selected hard negatives from 1.1, the ordinary rows form
-   class 0.
-   - **Out-of-sample display pool:** also produce a **bounded** pool of ordinary non-Guide Taipei
-     restaurants *outside* the modeling sample, built with the **same feature schema *and* the same
-     provenance** as the modeling rows (decision #8). This pool is never used in training or
-     evaluation — it is the live-inference demonstration surface (decision #7).
-1.3. **Filter to Taipei** (geography-confounder resolution) before dataset assembly.
-1.4. **Identity resolution** (`identity.py`) across the guide rows and the ordinary sample via name
-   + address + geo fuzzy matching (dedupe, alias table) so a Guide restaurant (starred or
-   Bib/Selected) is not also duplicated as an ordinary class-0 row. v1 scope = minimal matching
-   within the guide + the ordinary sample; at-scale resolution is parked.
+     the Taipei and New Taipei starred lists.
+1.2. **Class-0 ordinary sample + uniform enrichment** (`enrichment.py`, `database.py`): read
+   the existing Google Places DuckDB database without modifying it or calling external APIs.
+   Use the same Google-derived fields for **every** Guide and ordinary row, joined by verified,
+   case-sensitive Place ID. Guide fields supply labels only; never substitute Michelin price or
+   cuisine when a Google field is missing. Preserve nulls for Phase 2 train-only imputation.
+   - Map Google price levels to ordinal 0–4 (unspecified/missing stays null), and retain Google
+     primary type as the shared `cuisine` category proxy. Persist provider and actual per-record
+     collection timestamp (`place_raw_responses.fetched_at`).
+   - Select **1,000 ordinary in-sample rows and 1,000 disjoint ordinary out-of-sample rows** using
+     a fixed-seed hash of Place ID, independent of names and input ordering. Keep all eligible Guide rows
+     in-sample. Fail if the eligible ordinary pool cannot fill both configured limits.
+   - Stream database rows and bound retained feature rows to the Guide universe plus those two
+     pools. These are local modeling artifacts; public-map redistribution is checked before Phase 7.
+1.3. **Filter to Taipei and New Taipei** before dataset assembly. Preserve the two city values
+   separately. Explicit municipality names determine eligibility; unclassified/out-of-scope
+   addresses and invalid provider records are recorded in the export DLQ for review.
+   Keep all business statuses for Guide and ordinary restaurants in both modeling and display
+   pools, including temporarily closed, permanently closed, future-opening, and unknown status,
+   as requested by the user. Business status does not determine eligibility.
+1.4. **Identity resolution:** use the verified Guide-URL → Google Place-ID mapping and
+   case-sensitive Place ID joins for the database panel. Every Guide identity must be mapped and
+   have valid shared features; write `data/interim/guide_coverage.csv` and fail when coverage is
+   incomplete, except for explicitly recorded user exclusions in
+   `eligibility.unresolved_guide_exclusions`. These excluded unresolved identities remain visible
+   in coverage; if a mapping is later added, review and remove its exclusion before building.
+   A Guide Place ID can never reappear as an ordinary row. Restaurant IDs remain
+   stable across pool membership (`google_places:<place_id>`). Existing fuzzy matching remains
+   available for resolving source identities upstream, not for the final feature join.
+   - The Guide lookup includes both cities and keeps the source city in each search query.
+   - Synchronize CSV classifications for existing Place IDs independently of Google refresh TTL.
+     `scripts/enrich_michelin.py --guide-csv <verified-mapping.csv> --classifications-only` applies
+     classifications without API calls; the regular enrichment path also synchronizes cached rows.
 1.5. **Labeled-dataset construction** (`panel.py`): build `restaurant_id → class` (1 = Starred /
    0 = not Starred — ordinary sample + Bib/Selected) with the shared feature columns. **Tag every
    restaurant record with a `group` field (`in_sample` | `out_of_sample`)** — the in-sample group
    is the labeled modeling set; the out-of-sample group is the unlabeled display pool from 1.2.
    - **Idempotent** ingestion (MERGE/UPSERT, never blind INSERT); raw ingestion zone is
      append-only; schema-validation failures routed to a DLQ rather than crashing the batch.
-1.6. **Point-in-time note (leakage guard):** rating/review counts are current-state snapshots. The
+1.6. **Point-in-time note (leakage guard):** rating/review counts are current-state snapshots collected at per-record timestamps. The
    cross-sectional Starred-vs-not framing avoids the next-year-prediction leakage, but record the
    snapshot date and document that features are point-in-time-as-collected, not historical.
-1.7. **Reconcile** class-1 (Starred) counts against published starred totals as a data-quality gate
-   (e.g., Taipei 2023 ≈ 44 starred / 321 establishments; 2024 ≈ 49 / 343; 2025 ≈ 53 / 419); the
-   Bib/Selected hard-negative count reconciles against the remaining establishments.
+   Freeze the database, Guide CSV, identity mapping, and both configs together with SHA-256 hashes
+   and actual collection-date bounds. Preserve per-record dates; do not replace them with June 25.
+   `place_raw_response_history` retains each distinct Place ID/content hash/fetch timestamp;
+   `place_raw_responses` is the current-response projection. Migration seeds surviving responses;
+   previously overwritten history cannot be reconstructed.
+   Audit null counts and fractions by municipality and population, then by final panel group.
+   Keep missing features null for Phase 2 train-only imputation. Candidate ordinary counts remain
+   provisional until Guide identity coverage is complete; a blocked build has no final-panel audit.
+1.7. **Reconcile** both starred and Bib/Selected counts to the scoped local Guide snapshot,
+   recording business-status exclusions separately. Independent reconciliation to published
+   lists for a verified edition and each municipality is **deferred by user request**. Local count equality alone is not an independent published-count check.
+   The current local snapshot contains 43 starred and 117 hard negatives in Taipei, plus 38 hard
+   negatives in New Taipei. Do not substitute illustrative totals from a different Guide edition.
+
+**Local export command:**
+
+```bash
+uv run python scripts/build_labeled_panel.py \
+  --database data/restaurants.duckdb \
+  --guide-csv data/raw/guide/michelin_my_maps.csv \
+  --place-ids-csv data/interim/michelin_place_ids/michelin_taipei_place_ids.csv \
+  --output-dir data
+```
+
+The exporter writes the panel, summary, provenance manifest, identity aliases, and rejection
+reports. It refuses to write a final panel when scoped Guide coverage is incomplete.
+
+**Frozen acceptance run:**
+
+```bash
+uv run python scripts/freeze_snapshot.py \
+  --database data/restaurants.duckdb \
+  --guide-csv data/raw/guide/michelin_my_maps.csv \
+  --place-ids-csv data/interim/michelin_place_ids/michelin_taipei_place_ids.csv \
+  --pipeline-config config/pipeline.yaml --features-config config/features.yaml \
+  --output-dir data/snapshots/<snapshot-id>
+uv run python scripts/validate_snapshot.py \
+  --snapshot data/snapshots/<snapshot-id> \
+  --output-dir data/interim/<validation-id>
+```
+
+Snapshot and validation directories must be new. The validator checks frozen-file integrity,
+raw feature provenance/history, eligible geography/types/ranges, rejected-row accounting,
+Guide coverage, final identities/labels/pools, and byte-identical repeat outputs. Blocked builds
+compare diagnostics only; final-panel checks remain blocked. Published reconciliation is explicitly
+deferred, never reported as passed. The accepted snapshot is `data/snapshots/phase1-all-statuses`, built after adding 28 resolved
+restaurants and excluding six unresolved entries at the user’s request: Jhen Pin, Guang Xing
+Pork Knuckle, San Chieh Mei Nung Chia Le, Chia I, Le Yeh, and Zhulin Chicken (Yonghe).
+The unchanged raw Guide CSV has 198 rows in scope: 192 eligible and six excluded by the user. Published-edition reconciliation remains deferred.
+`data/interim/phase1-all-statuses-validation/validation.json` records the passing local gate.
+The Phase 2 input in `data/processed/labeled_restaurants.csv` contains 1,192 modeling rows
+(43 starred, 149 hard negatives, 1,000 ordinary) and 1,000 disjoint display rows. Missing
+features remain null; final-population counts and fractions are in `data/interim/missingness_audit.json`.
 
 ## Validation
 
@@ -805,7 +875,8 @@ never diverge) **and** the analysis JSON into `reports/` for the external write-
 **map-only**; the metrics / confusion-matrix / feature-importance results are not served — they feed
 the write-up. All heavy compute is precomputed here at build time.
 
-**Prerequisites:** Phase 6 ONNX artifact + parity pass.
+**Prerequisites:** Phase 6 ONNX artifact + parity pass; verify redistribution permission for
+every public-map field and its source before writing browser-facing data.
 
 ## Deliverables
 
@@ -863,7 +934,7 @@ reports/         # for the external write-up: metrics.json, confusion_matrix.jso
 
 ## Objective
 
-Build the fully static GitHub Pages site: the **interactive Taipei map only** (no panels), with
+Build the fully static GitHub Pages site: the **interactive Taipei + New Taipei map only** (no panels), with
 **in-browser ONNX inference**. The map **visibly distinguishes the two groups** (in-sample vs
 out-of-sample) and states each group's meaning. The user **clicks a marker or searches by name** to
 select a restaurant; show its basic info, then — **by group** — show its score: an **in-sample** row

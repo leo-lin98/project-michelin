@@ -1,6 +1,8 @@
 project:
   name: michelin-taiwan-starred-classifier
-  geography: Taipei
+  geography:
+    - Taipei
+    - New Taipei
   scope: portfolio_v1
 
 seed: 20260225
@@ -37,12 +39,42 @@ threshold:
 data_sources:
   guide_primary: michelin-my-maps
   guide_crosscheck: wikipedia
-  ordinary_base: openstreetmap
-  enrichment_provider: uniform_provider_pipeline
+  ordinary_base: google_places
+  enrichment_provider: google_places
 
 pools:
   ordinary_in_sample: bounded
   ordinary_out_of_sample: bounded
+  ordinary_in_sample_limit: 1000
+  ordinary_out_of_sample_limit: 1000
+
+paths:
+  raw_guide_dir: data/raw/guide
+  raw_enrichment_dir: data/raw/enrichment
+  interim_dir: data/interim
+  processed_dir: data/processed
+
+snapshots:
+  feature_snapshot_policy: per_record_fetched_at
+
+eligibility:
+  business_statuses:
+    - OPERATIONAL
+    - CLOSED_TEMPORARILY
+    - CLOSED_PERMANENTLY
+    - FUTURE_OPENING
+    - null
+  missing_features: preserve_null_for_phase_2
+  unresolved_guide_exclusions:
+    - https://guide.michelin.com/en/northern-taiwan/new-taipei-city_2853082/restaurant/jhen-pin
+    - https://guide.michelin.com/en/northern-taiwan/new-taipei-city_2853082/restaurant/guang-xing-pork-knuckle
+    - https://guide.michelin.com/en/northern-taiwan/new-taipei-city_2853082/restaurant/san-chieh-mei-nung-chia-le
+    - https://guide.michelin.com/en/northern-taiwan/new-taipei-city_2853082/restaurant/chia-i
+    - https://guide.michelin.com/en/northern-taiwan/new-taipei-city_2853082/restaurant/le-yeh
+    - https://guide.michelin.com/en/northern-taiwan/new-taipei-city_2853082/restaurant/zhulin-chicken-yonghe
+
+validation:
+  published_reconciliation: deferred
 
 outputs:
   docs_data_dir: docs/data

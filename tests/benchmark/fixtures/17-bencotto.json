@@ -1,0 +1,68 @@
+{
+  "name": "Bencotto",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Bencotto"
+            },
+            "formattedAddress": "No. 158, DunHua N Rd, Songshan District, Taipei City, 10548",
+            "id": "ChIJmd5Mp-irQjQRDdakY2jb_IA",
+            "internationalPhoneNumber": "+886 2 2715 6868",
+            "location": {
+              "latitude": 25.055777799999998,
+              "longitude": 121.547999
+            },
+            "nationalPhoneNumber": "02 2715 6868",
+            "primaryType": "italian_restaurant",
+            "types": [
+              "italian_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.mandarinoriental.com/en/taipei/songshan/dine/bencotto?src=loc.yext.motpe.yxt?"
+          }
+        ]
+      },
+      "text_query": "Bencotto, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Bencotto"
+            },
+            "formattedAddress": "No. 158, DunHua N Rd, Songshan District, Taipei City, 10548",
+            "id": "ChIJmd5Mp-irQjQRDdakY2jb_IA",
+            "internationalPhoneNumber": "+886 2 2715 6868",
+            "location": {
+              "latitude": 25.055777799999998,
+              "longitude": 121.547999
+            },
+            "nationalPhoneNumber": "02 2715 6868",
+            "primaryType": "italian_restaurant",
+            "types": [
+              "italian_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.mandarinoriental.com/en/taipei/songshan/dine/bencotto?src=loc.yext.motpe.yxt?"
+          }
+        ]
+      },
+      "text_query": "Bencotto, 6F, Mandarin Oriental Hotel, 158 Dunhua North Road, Songshan District, Taipei, 105, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "17-bencotto"
+}

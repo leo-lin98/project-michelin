@@ -1,0 +1,64 @@
+{
+  "name": "Circum-",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "Circum-"
+            },
+            "formattedAddress": "10491, Taipei City, Zhongshan District, Kangle Village, Lane 39, Section 2, Zhongshan N Rd, 3號麗晶精品 B2B2Regent Galleria B2",
+            "id": "ChIJSR-A2kCpQjQRurjUm98-Rac",
+            "location": {
+              "latitude": 25.0541597,
+              "longitude": 121.5253183
+            },
+            "primaryType": "restaurant",
+            "types": [
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://inline.app/booking/Circum-"
+          }
+        ]
+      },
+      "text_query": "Circum-, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Regent Taipei"
+            },
+            "formattedAddress": "No. 3號, Lane 39, Section 2, Zhongshan N Rd, Kangle Village, Zhongshan District, Taipei City, 104",
+            "id": "ChIJ5ymH9mipQjQRqo6WdCNtP24",
+            "internationalPhoneNumber": "+886 2 2523 8000",
+            "location": {
+              "latitude": 25.054157999999997,
+              "longitude": 121.52428800000001
+            },
+            "nationalPhoneNumber": "02 2523 8000",
+            "primaryType": "hotel",
+            "types": [
+              "hotel",
+              "lodging",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.regenttaiwan.com/"
+          }
+        ]
+      },
+      "text_query": "Circum-, B2, Regent Hotel, 3, Lane 39, Section 2, Zhongshan North Road, Zhongshan District, Taipei, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "09-circum"
+}

@@ -1,0 +1,76 @@
+{
+  "name": "Ya Ge",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Ya Ge"
+            },
+            "formattedAddress": "No. 158, DunHua N Rd, Songshan District, Taipei City, 10548",
+            "id": "ChIJCToTHearQjQR4sFNUhOOeU8",
+            "internationalPhoneNumber": "+886 2 2715 6668",
+            "location": {
+              "latitude": 25.055553000000003,
+              "longitude": 121.548328
+            },
+            "nationalPhoneNumber": "02 2715 6668",
+            "primaryType": "cantonese_restaurant",
+            "types": [
+              "cantonese_restaurant",
+              "chinese_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.mandarinoriental.com/en/taipei/songshan/dine/ya-ge?src=loc.yext.motpe.ggl"
+          }
+        ]
+      },
+      "text_query": "Ya Ge, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Mandarin Oriental, Taipei"
+            },
+            "formattedAddress": "No. 158, DunHua N Rd, Songshan District, Taipei City, 10548",
+            "id": "ChIJWXlWGearQjQRNEj80OdQoVw",
+            "internationalPhoneNumber": "+886 2 2715 6888",
+            "location": {
+              "latitude": 25.055741599999998,
+              "longitude": 121.5481485
+            },
+            "nationalPhoneNumber": "02 2715 6888",
+            "primaryType": "hotel",
+            "types": [
+              "hotel",
+              "banquet_hall",
+              "catering_service",
+              "food_delivery",
+              "wedding_venue",
+              "spa",
+              "event_venue",
+              "lodging",
+              "food",
+              "point_of_interest",
+              "service",
+              "establishment"
+            ],
+            "websiteUri": "https://www.mandarinoriental.com/en/taipei/songshan?src=loc.dir.motpe.ggl"
+          }
+        ]
+      },
+      "text_query": "Ya Ge, 3F, Mandarin Oriental Hotel, 158 Dunhua North Road, Songshan District, Taipei, 105, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "18-ya-ge"
+}

@@ -8,7 +8,7 @@ from michelin.config import Award, load_config
 def test_load_config_validates_pipeline_and_feature_yaml() -> None:
     config = load_config(Path("config/pipeline.yaml"), Path("config/features.yaml"))
 
-    assert config.pipeline.project.geography == "Taipei"
+    assert config.pipeline.project.geography == ("Taipei", "New Taipei")
     assert config.pipeline.labels.starred_awards == (
         Award.ONE_STAR,
         Award.TWO_STARS,

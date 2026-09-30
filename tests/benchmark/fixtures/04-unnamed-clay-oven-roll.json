@@ -1,0 +1,62 @@
+{
+  "name": "Unnamed Clay Oven Roll",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Unnamed Clay Oven Roll"
+            },
+            "formattedAddress": "Nanjichang Night Market, Alley 5, Lane 315, Section 2, Zhonghua Rd, Zhongqin Village, Zhongzheng District, Taipei City, 100",
+            "id": "ChIJ56-COrupQjQRggNd7rtSK1U",
+            "location": {
+              "latitude": 25.0284445,
+              "longitude": 121.5067334
+            },
+            "primaryType": "bakery",
+            "types": [
+              "bakery",
+              "food_store",
+              "food",
+              "point_of_interest",
+              "store",
+              "establishment"
+            ]
+          }
+        ]
+      },
+      "text_query": "Unnamed Clay Oven Roll, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Nanjichang Night Market"
+            },
+            "formattedAddress": "Lane 307, Section 2, Zhonghua Rd, Zhongqin Village, Zhongzheng District, Taipei City, 100",
+            "id": "ChIJv92qsLGpQjQRPYW4ymlvqS0",
+            "location": {
+              "latitude": 25.0291811,
+              "longitude": 121.50592440000001
+            },
+            "primaryType": "market",
+            "types": [
+              "market",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.tcma.gov.taipei/News_Content.aspx?n=FAC14AD2DE4E01A4&sms=32F7BA052C5CA548&s=8B537F8C6C708E0E"
+          }
+        ]
+      },
+      "text_query": "Unnamed Clay Oven Roll, Nanjichang Night Market, Stall 74, Lane 311, Section 2, Zhonghua Road, Zhongzheng District, Taipei, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "04-unnamed-clay-oven-roll"
+}

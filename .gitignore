@@ -5,7 +5,7 @@ __pycache__/
 .pytest_cache/
 
 # Local data and downloaded/cached source inputs must not be committed.
-data/
+/data/
 *.csv
 *.tsv
 *.parquet
