@@ -10,8 +10,8 @@ from restaurant_ingestion.config import (
     PRICE_BACKFILL_PROGRESS_INTERVAL,
     PRICE_BACKFILL_SAMPLE_SIZE,
 )
+from restaurant_ingestion.ingestion.price_backfill import backfill_prices, build_client
 from restaurant_ingestion.storage.duckdb_store import DuckDbStore
-from scripts.backfill_price_fields import backfill_prices, build_client
 
 
 def missing_michelin_price_state(database_path: Path) -> list[tuple[str, str | None]]:

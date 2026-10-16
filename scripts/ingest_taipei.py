@@ -1,4 +1,5 @@
 from pathlib import Path
+import logging
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -8,7 +9,7 @@ if str(SRC) not in sys.path:
 
 import argparse
 
-from restaurant_ingestion.clients.google_places import GooglePlacesClient
+from restaurant_ingestion.clients.google_places import BudgetExceededError, GooglePlacesClient
 from restaurant_ingestion.config import (
     DATABASE_PATH,
     DETAILS_REFRESH_TTL_DAYS,
@@ -75,19 +76,34 @@ def run_ingestion() -> dict[str, object]:
     client = build_client()
     try:
         store.create_schema()
-        discovery = run_taipei_discovery(
-            client,
-            store,
-            TAIPEI_GRID_SOUTH,
-            TAIPEI_GRID_WEST,
-            TAIPEI_GRID_NORTH,
-            TAIPEI_GRID_EAST,
-            TAIPEI_GRID_TILE_SIZE_DEGREES,
-            DISCOVERY_QUERIES,
-            ORDINARY_RESTAURANT_TARGET,
-            DISCOVERY_REQUEST_BUDGET,
-            PROGRESS_LOG_INTERVAL,
-        )
+        discovery_requests_before = store.api_call_count("text_search_ids_only")
+        try:
+            discovery = run_taipei_discovery(
+                client,
+                store,
+                TAIPEI_GRID_SOUTH,
+                TAIPEI_GRID_WEST,
+                TAIPEI_GRID_NORTH,
+                TAIPEI_GRID_EAST,
+                TAIPEI_GRID_TILE_SIZE_DEGREES,
+                DISCOVERY_QUERIES,
+                ORDINARY_RESTAURANT_TARGET,
+                DISCOVERY_REQUEST_BUDGET,
+                PROGRESS_LOG_INTERVAL,
+            )
+        except BudgetExceededError:
+            discovery_requests_used = store.api_call_count("text_search_ids_only")
+            logging.getLogger(__name__).warning(
+                "Discovery request budget exhausted; continuing candidate enrichment",
+                extra={
+                    "discovery_request_budget": DISCOVERY_REQUEST_BUDGET,
+                    "discovery_requests_used": discovery_requests_used,
+                },
+            )
+            discovery = {
+                "budget_exhausted": True,
+                "requests_made": discovery_requests_used - discovery_requests_before,
+            }
         enrichment = run_candidate_enrichment(
             client,
             store,

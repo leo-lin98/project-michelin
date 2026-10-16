@@ -148,9 +148,13 @@ def resolve_michelin_place_ids_to_paths(
     existing_keys = tuple(row_key(row) for row in existing_rows)
     existing_unresolved_keys = tuple(row_key(row) for row in existing_unresolved_rows)
     existing_validation_report_rows = read_validation_report_rows(validation_report_csv_path(unresolved_output_csv_path))
-    resolved_rows: list[dict[str, object]] = []
-    unresolved_rows: list[dict[str, object]] = []
-    validation_report_rows: list[dict[str, object]] = []
+    mark_lookup_incomplete(source_csv_path, output_csv_path, unresolved_output_csv_path)
+    initialize_lookup_outputs(
+        output_csv_path, unresolved_output_csv_path, existing_rows, existing_unresolved_rows,
+        existing_validation_report_rows,
+    )
+    resolved_rows = 0
+    unresolved_rows = 0
     used_requests = 0
     skipped_existing_rows = 0
     skipped_existing_unresolved_rows = 0
@@ -173,31 +177,23 @@ def resolve_michelin_place_ids_to_paths(
         report_row = validation_report_row(row, text_query, response.places)
         valid_place_ids = tuple(place_id for place_id in row_text(report_row, "valid_candidate_place_ids").split("|") if place_id)
         if len(valid_place_ids) != 1:
-            unresolved_rows.append(unresolved_row(row, text_query))
-            validation_report_rows.append(report_row)
+            append_lookup_decision(
+                unresolved_output_csv_path, unresolved_row(row, text_query), UNRESOLVED_COLUMNS,
+                validation_report_csv_path(unresolved_output_csv_path), report_row,
+            )
+            unresolved_rows += 1
             continue
-        resolved_rows.append(output_row(row, valid_place_ids[0]))
+        append_lookup_decision(
+            output_csv_path, output_row(row, valid_place_ids[0]), OUTPUT_COLUMNS,
+            validation_report_csv_path(unresolved_output_csv_path), None,
+        )
+        resolved_rows += 1
 
-    output_csv_path.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame((*existing_rows, *resolved_rows), columns=OUTPUT_COLUMNS).to_csv(output_csv_path, index=False)
-    unresolved_output_csv_path.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame((*existing_unresolved_rows, *unresolved_rows), columns=UNRESOLVED_COLUMNS).to_csv(
-        unresolved_output_csv_path,
-        index=False,
-    )
-    validation_report_output_path = validation_report_csv_path(unresolved_output_csv_path)
-    validation_report_output_path.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(
-        (*existing_validation_report_rows, *validation_report_rows),
-        columns=VALIDATION_REPORT_COLUMNS,
-    ).to_csv(
-        validation_report_output_path,
-        index=False,
-    )
+    complete_lookup_outputs(output_csv_path, unresolved_output_csv_path)
     return {
         "taipei_rows": len(source_rows),
-        "resolved_rows": len(resolved_rows),
-        "unresolved_rows": len(unresolved_rows),
+        "resolved_rows": resolved_rows,
+        "unresolved_rows": unresolved_rows,
         "skipped_existing_rows": skipped_existing_rows,
         "skipped_existing_unresolved_rows": skipped_existing_unresolved_rows,
         "text_search_requests": used_requests,
@@ -239,9 +235,13 @@ def resolve_michelin_place_ids_with_matcher_to_paths(
     existing_keys = tuple(row_key(row) for row in existing_rows)
     existing_unresolved_keys = tuple(row_key(row) for row in existing_unresolved_rows)
     existing_validation_report_rows = read_validation_report_rows(validation_report_csv_path(unresolved_output_csv_path))
-    resolved_rows: list[dict[str, object]] = []
-    unresolved_rows: list[dict[str, object]] = []
-    validation_report_rows: list[dict[str, object]] = []
+    mark_lookup_incomplete(source_csv_path, output_csv_path, unresolved_output_csv_path)
+    initialize_lookup_outputs(
+        output_csv_path, unresolved_output_csv_path, existing_rows, existing_unresolved_rows,
+        existing_validation_report_rows,
+    )
+    resolved_rows = 0
+    unresolved_rows = 0
     used_requests = 0
     llm_judged_rows = 0
     skipped_existing_rows = 0
@@ -288,39 +288,95 @@ def resolve_michelin_place_ids_with_matcher_to_paths(
                 llm_judged_rows += 1
 
         report_query = pipe_join(tuple(str(entry["text_query"]) for entry in queries))
-        validation_report_rows.append(
-            matcher_validation_report_row(row, report_query, merged_candidate_response(queries), decision, judgment)
-        )
+        report_row = matcher_validation_report_row(row, report_query, merged_candidate_response(queries), decision, judgment)
         if decision.outcome == "place_id":
-            resolved_rows.append(output_row(row, decision.place_id))
+            append_lookup_decision(
+                output_csv_path, output_row(row, decision.place_id), OUTPUT_COLUMNS,
+                validation_report_csv_path(unresolved_output_csv_path), report_row,
+            )
+            resolved_rows += 1
             continue
-        unresolved_rows.append(unresolved_row(row, primary_query))
+        append_lookup_decision(
+            unresolved_output_csv_path, unresolved_row(row, primary_query), UNRESOLVED_COLUMNS,
+            validation_report_csv_path(unresolved_output_csv_path), report_row,
+        )
+        unresolved_rows += 1
 
-    output_csv_path.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame((*existing_rows, *resolved_rows), columns=OUTPUT_COLUMNS).to_csv(output_csv_path, index=False)
-    unresolved_output_csv_path.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame((*existing_unresolved_rows, *unresolved_rows), columns=UNRESOLVED_COLUMNS).to_csv(
-        unresolved_output_csv_path,
-        index=False,
-    )
-    validation_report_output_path = validation_report_csv_path(unresolved_output_csv_path)
-    validation_report_output_path.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(
-        (*existing_validation_report_rows, *validation_report_rows),
-        columns=VALIDATION_REPORT_COLUMNS,
-    ).to_csv(
-        validation_report_output_path,
-        index=False,
-    )
+    complete_lookup_outputs(output_csv_path, unresolved_output_csv_path)
     return {
         "taipei_rows": len(source_rows),
-        "resolved_rows": len(resolved_rows),
-        "unresolved_rows": len(unresolved_rows),
+        "resolved_rows": resolved_rows,
+        "unresolved_rows": unresolved_rows,
         "skipped_existing_rows": skipped_existing_rows,
         "skipped_existing_unresolved_rows": skipped_existing_unresolved_rows,
         "text_search_requests": used_requests,
         "llm_judged_rows": llm_judged_rows,
     }
+
+
+def lookup_incomplete_path(csv_path: Path) -> Path:
+    return csv_path.with_name(f"{csv_path.name}.incomplete")
+
+
+def mark_lookup_incomplete(source_csv_path: Path, output_csv_path: Path, unresolved_output_csv_path: Path) -> None:
+    resume_paths = (
+        f"source_csv={source_csv_path}, output_csv={output_csv_path}, "
+        f"unresolved_csv={unresolved_output_csv_path}"
+    )
+    for csv_path in (output_csv_path, unresolved_output_csv_path):
+        marker = lookup_incomplete_path(csv_path)
+        marker.parent.mkdir(parents=True, exist_ok=True)
+        marker.write_text(resume_paths, encoding="utf-8")
+
+
+def complete_lookup_outputs(output_csv_path: Path, unresolved_output_csv_path: Path) -> None:
+    for csv_path in (output_csv_path, unresolved_output_csv_path):
+        lookup_incomplete_path(csv_path).unlink()
+
+
+def ensure_lookup_complete(csv_path: Path) -> None:
+    marker = lookup_incomplete_path(csv_path)
+    if marker.exists():
+        raise ValueError(
+            f"Michelin place_id lookup is incomplete: artifact={csv_path}. "
+            f"Resume the original lookup with {marker.read_text(encoding='utf-8')} before stacking or retrying."
+        )
+
+
+def ensure_lookup_directory_complete(directory: Path) -> None:
+    for marker in sorted(directory.glob("*.csv.incomplete")):
+        ensure_lookup_complete(marker.with_suffix(""))
+
+
+def initialize_lookup_outputs(
+    output_csv_path: Path,
+    unresolved_output_csv_path: Path,
+    existing_rows: tuple[dict[str, object], ...],
+    existing_unresolved_rows: tuple[dict[str, object], ...],
+    existing_validation_report_rows: tuple[dict[str, object], ...],
+) -> None:
+    outputs = (
+        (output_csv_path, existing_rows, OUTPUT_COLUMNS),
+        (unresolved_output_csv_path, existing_unresolved_rows, UNRESOLVED_COLUMNS),
+        (validation_report_csv_path(unresolved_output_csv_path), existing_validation_report_rows, VALIDATION_REPORT_COLUMNS),
+    )
+    for path, rows, columns in outputs:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        pd.DataFrame(rows, columns=columns).to_csv(path, index=False)
+
+
+def append_lookup_decision(
+    result_csv_path: Path,
+    result_row: dict[str, object],
+    result_columns: tuple[str, ...],
+    report_csv_path: Path,
+    report_row: dict[str, object] | None,
+) -> None:
+    pd.DataFrame((result_row,), columns=result_columns).to_csv(result_csv_path, mode="a", header=False, index=False)
+    if report_row is not None:
+        pd.DataFrame((report_row,), columns=VALIDATION_REPORT_COLUMNS).to_csv(
+            report_csv_path, mode="a", header=False, index=False,
+        )
 
 
 def stack_resolved_place_id_datasets(input_csv_paths: tuple[Path, ...], output_csv_path: Path) -> dict[str, int]:
@@ -354,6 +410,7 @@ def stack_resolved_place_id_directory(resolved_dir: Path, output_csv_path: Path)
 
 def processed_place_id_input_paths(resolved_dir: Path, unresolved_dir: Path) -> tuple[Path, ...]:
     resolved_paths = resolved_place_id_csv_paths(resolved_dir)
+    ensure_lookup_directory_complete(unresolved_dir)
     base_path = resolved_dir / "base.csv"
     if base_path not in resolved_paths:
         raise FileNotFoundError(f"Resolved Michelin place_id base CSV does not exist: path={base_path}")
@@ -378,6 +435,7 @@ def processed_place_id_input_paths(resolved_dir: Path, unresolved_dir: Path) -> 
 def resolved_place_id_csv_paths(resolved_dir: Path) -> tuple[Path, ...]:
     if not resolved_dir.exists():
         raise FileNotFoundError(f"Resolved Michelin place_id directory does not exist: path={resolved_dir}")
+    ensure_lookup_directory_complete(resolved_dir)
     paths = tuple(sorted(path for path in resolved_dir.glob("*.csv") if path.is_file()))
     if not paths:
         raise ValueError(f"Resolved Michelin place_id directory contains no CSV files: path={resolved_dir}")
@@ -394,6 +452,7 @@ def latest_unresolved_csv_path(unresolved_dir: Path) -> Path:
 def latest_unresolved_csv_path_or_none(unresolved_dir: Path) -> Path | None:
     if not unresolved_dir.exists():
         raise FileNotFoundError(f"Unresolved Michelin place_id directory does not exist: path={unresolved_dir}")
+    ensure_lookup_directory_complete(unresolved_dir)
     paths = unresolved_workflow_csv_paths(unresolved_dir)
     nonempty_paths = tuple(path for path in paths if len(read_unresolved_frame(path)) > 0)
     if not nonempty_paths:
@@ -493,6 +552,7 @@ def read_existing_output_rows(output_csv_path: Path) -> tuple[dict[str, object],
 
 
 def read_resolved_output_frame(input_csv_path: Path) -> pd.DataFrame:
+    ensure_lookup_complete(input_csv_path)
     rows = pd.read_csv(input_csv_path)
     actual_columns = set(rows.columns)
     expected_columns = set(OUTPUT_COLUMNS)
