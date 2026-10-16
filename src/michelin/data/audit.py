@@ -7,7 +7,7 @@ import pandas as pd
 from pydantic import BaseModel, ConfigDict
 
 
-AUDITED_FEATURES = ("price_level", "average_rating", "review_count", "cuisine")
+AUDITED_FEATURES = ("price_range", "average_rating", "review_count", "cuisine")
 
 
 class MissingnessGroup(BaseModel):

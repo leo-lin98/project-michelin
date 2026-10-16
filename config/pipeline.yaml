@@ -34,7 +34,7 @@ models:
 
 threshold:
   calibration: platt_or_isotonic
-  similar_to_starred_cutoff: 0.5
+  similar_to_starred_cutoff: 0.2  #experimentation: fixed cutoff 20% (previously 50%).
 
 data_sources:
   guide_primary: michelin-my-maps

@@ -46,6 +46,7 @@ def feature_fixture() -> pd.DataFrame:
             "latitude": [25.0] * 8 + [float("inf")],
             "longitude": [121.5] * 9,
             "price_level": pd.array([2, 3, 1, 2, None, 1, 2, 1, 1], dtype="Int64"),
+            "price_range": [None] * 9,
             "cuisine": ["chinese_restaurant"] * 9,
             "average_rating": [4.5] * 9,
             "review_count": pd.array([100] * 9, dtype="Int64"),

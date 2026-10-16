@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
 
 
 class Award(StrEnum):
@@ -147,12 +147,38 @@ class LeakageControlConfig(StrictModel):
     excluded_fields: tuple[str, ...]
     fit_transforms_on: str
     require_feature_provenance_parity: bool
+    missingness_alpha: float = Field(default=0.05, gt=0, lt=1)
 
 
 class FeatureConfig(StrictModel):
     feature_schema: FeatureSchemaConfig
     transforms: TransformConfig
     leakage_controls: LeakageControlConfig
+    density_radius_m: float = Field(default=500.0, gt=0)
+
+    @model_validator(mode="after")
+    def validate_supported_features(self) -> "FeatureConfig":
+        supported_schemas = (
+            (("price_level", "average_rating", "review_count", "neighborhood_density"), ("cuisine", "city")),
+            (("average_rating", "review_count", "neighborhood_density"), ("price_range", "cuisine", "city")),
+        )
+        if (self.feature_schema.numeric, self.feature_schema.categorical) not in supported_schemas:
+            raise ValueError("Unsupported feature schema or order")
+        if self.feature_schema.optional_text not in ((), ("review_text_features",)):
+            raise ValueError("Unsupported optional text features")
+        if (self.transforms.numeric_imputer, self.transforms.numeric_scaler,
+            self.transforms.categorical_encoder, self.transforms.text_vectorizer) != ("median", "standard", "one_hot", "none"):
+            raise ValueError("Only median/standard/one_hot transforms with no text vectorizer are supported")
+        if self.leakage_controls.fit_transforms_on != "train_only" or not self.leakage_controls.require_feature_provenance_parity:
+            raise ValueError("Train-only transforms and provider provenance parity are mandatory")
+        if not {"Description", "FacilitiesAndServices", "Award"}.issubset(self.leakage_controls.excluded_fields):
+            raise ValueError("Michelin internal fields must be excluded")
+        return self
+
+    def require_phase_2_schema(self) -> None:
+        """Keep historical configs readable while requiring categorical prices for execution."""
+        if self.feature_schema.numeric != ("average_rating", "review_count", "neighborhood_density") or self.feature_schema.categorical != ("price_range", "cuisine", "city"):
+            raise ValueError("Phase 2 requires categorical price_range instead of numeric price_level")
 
 
 class AppConfig(StrictModel):

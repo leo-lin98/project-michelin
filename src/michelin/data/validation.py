@@ -13,6 +13,8 @@ from michelin.data.audit import DataAudit
 from michelin.data.database import GuideCoverageError, export_database_panel
 from michelin.data.panel import HARD_NEGATIVE_AWARDS, STARRED_AWARDS
 from michelin.data.snapshot import sha256_file, verify_snapshot
+from restaurant_ingestion.models import PriceRange
+from restaurant_ingestion.storage.duckdb_store import format_price_range
 
 
 class CheckResult(BaseModel):
@@ -30,9 +32,9 @@ class ValidationReport(BaseModel):
 
 
 def check_google_provenance(connection: duckdb.DuckDBPyConnection) -> CheckResult:
-    mismatches = connection.execute(
-        """SELECT count(*) FROM restaurants r LEFT JOIN place_raw_responses raw USING (place_id)
-           WHERE raw.place_id IS NULL
+    cursor = connection.execute(
+        """SELECT r.price_range, json_extract_string(raw.response_json, '$.priceRange'),
+              (raw.place_id IS NULL
               OR r.place_id IS DISTINCT FROM json_extract_string(raw.response_json, '$.id')
               OR r.name IS DISTINCT FROM json_extract_string(raw.response_json, '$.displayName.text')
               OR r.address IS DISTINCT FROM json_extract_string(raw.response_json, '$.formattedAddress')
@@ -42,8 +44,15 @@ def check_google_provenance(connection: duckdb.DuckDBPyConnection) -> CheckResul
               OR r.review_count IS DISTINCT FROM TRY_CAST(json_extract(raw.response_json, '$.userRatingCount') AS INTEGER)
               OR r.price_level IS DISTINCT FROM json_extract_string(raw.response_json, '$.priceLevel')
               OR r.primary_category IS DISTINCT FROM json_extract_string(raw.response_json, '$.primaryType')
-              OR r.business_status IS DISTINCT FROM json_extract_string(raw.response_json, '$.businessStatus')"""
-    ).fetchone()[0]
+              OR r.business_status IS DISTINCT FROM json_extract_string(raw.response_json, '$.businessStatus'))
+           FROM restaurants r LEFT JOIN place_raw_responses raw USING (place_id)"""
+    )
+    mismatches = 0
+    while batch := cursor.fetchmany(1000):
+        for stored_range, raw_range, other_mismatch in batch:
+            parsed_range = None if raw_range is None else PriceRange.model_validate_json(raw_range)
+            if other_mismatch or stored_range != format_price_range(parsed_range):
+                mismatches += 1
     return CheckResult(name="google_feature_provenance", status="failed" if mismatches else "passed", detail=f"{mismatches} restaurant rows differ from their raw Google response")
 
 

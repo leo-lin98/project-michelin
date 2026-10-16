@@ -1,7 +1,10 @@
+import json
 from pathlib import Path
 
 import duckdb
+import pytest
 import yaml
+from pydantic import ValidationError
 
 from michelin.data import validation
 from michelin.data.snapshot import freeze_snapshot
@@ -53,3 +56,41 @@ def test_validation_detects_feature_values_not_matching_raw_google_response(tmp_
     assert provenance.status == "failed"
     assert report.phase_1_ready is False
     assert not (tmp_path / "validation" / "build_a" / "processed" / "labeled_restaurants.csv").exists()
+
+
+@pytest.mark.parametrize("place_id", ["star", "bib", "ordinary-1", "ordinary-2"])
+@pytest.mark.parametrize("stored,raw_range,expected_status", [
+    ("200-400", {"startPrice": {"currencyCode": "TWD", "units": "200"}, "endPrice": {"currencyCode": "TWD", "units": "400"}}, "passed"),
+    ("2000+", {"startPrice": {"currencyCode": "TWD", "units": "2000"}}, "passed"),
+    (None, None, "passed"),
+    (None, {"startPrice": {"currencyCode": "TWD", "units": "2000"}}, "failed"),
+    ("2000+", None, "failed"),
+    ("200-400", {"startPrice": {"currencyCode": "TWD", "units": "2000"}}, "failed"),
+])
+def test_raw_google_price_range_parity_in_guide_and_ordinary_identities(
+    tmp_path: Path, place_id: str, stored: str | None,
+    raw_range: dict[str, dict[str, str]] | None, expected_status: str,
+) -> None:
+    database, _, _ = export_fixture(tmp_path)
+    with duckdb.connect(str(database)) as connection:
+        payload = json.loads(connection.execute(
+            "SELECT response_json FROM place_raw_responses WHERE place_id=?", [place_id],
+        ).fetchone()[0])
+        if raw_range is not None:
+            payload["priceRange"] = raw_range
+        connection.execute("UPDATE restaurants SET price_range=? WHERE place_id=?", [stored, place_id])
+        connection.execute("UPDATE place_raw_responses SET response_json=? WHERE place_id=?", [json.dumps(payload), place_id])
+        result = validation.check_google_provenance(connection)
+    assert result.status == expected_status
+
+
+def test_malformed_raw_google_price_range_fails_explicitly(tmp_path: Path) -> None:
+    database, _, _ = export_fixture(tmp_path)
+    with duckdb.connect(str(database)) as connection:
+        payload = json.loads(connection.execute(
+            "SELECT response_json FROM place_raw_responses WHERE place_id='star'",
+        ).fetchone()[0])
+        payload["priceRange"] = {"startPrice": {"currencyCode": "TWD", "units": ["2000"]}}
+        connection.execute("UPDATE place_raw_responses SET response_json=? WHERE place_id='star'", [json.dumps(payload)])
+        with pytest.raises(ValidationError):
+            validation.check_google_provenance(connection)

@@ -11,3 +11,11 @@ __pycache__/
 *.parquet
 *.feather
 *.jsonl
+
+# Local cutoff experiment results.
+/experiments/
+
+# Local plans and execution reports.
+/michelin-plan.md
+/docs/superpowers/plans/
+/reports/

@@ -1,14 +1,13 @@
 feature_schema:
   numeric:
-    - price_level
     - average_rating
     - review_count
     - neighborhood_density
   categorical:
+    - price_range
     - cuisine
     - city
-  optional_text:
-    - review_text_features
+  optional_text: []
 
 transforms:
   numeric_imputer: median
@@ -23,3 +22,7 @@ leakage_controls:
     - Award
   fit_transforms_on: train_only
   require_feature_provenance_parity: true
+
+  missingness_alpha: 0.05
+
+density_radius_m: 500

@@ -56,6 +56,7 @@ class DatabaseRestaurant(BaseModel):
         "PRICE_LEVEL_UNSPECIFIED", "PRICE_LEVEL_FREE", "PRICE_LEVEL_INEXPENSIVE",
         "PRICE_LEVEL_MODERATE", "PRICE_LEVEL_EXPENSIVE", "PRICE_LEVEL_VERY_EXPENSIVE",
     ] | None
+    price_range: str | None
     primary_category: str | None
     fetched_at: datetime
     is_michelin: bool
@@ -144,6 +145,7 @@ def provider_feature_row(row: DatabaseRestaurant, city: str) -> dict[str, str | 
         "city": city, "latitude": row.latitude, "longitude": row.longitude,
         "average_rating": row.average_rating, "review_count": row.review_count,
         "price_level": None if row.price_level is None else PRICE_LEVELS[row.price_level],
+        "price_range": row.price_range,
         "cuisine": row.primary_category, "feature_provider": "google_places",
         "feature_snapshot_date": row.fetched_at.isoformat(),
     }
@@ -161,7 +163,7 @@ def read_bounded_features(
     """Stream rows in seeded ID order; retain all Guide rows plus the bounded ordinary pools."""
     cursor = connection.execute(
         """SELECT r.place_id AS source_id, r.name, r.address, r.latitude, r.longitude,
-                  r.rating AS average_rating, r.review_count, r.price_level, r.primary_category,
+                  r.rating AS average_rating, r.review_count, r.price_level, r.price_range, r.primary_category,
                   raw.fetched_at, r.is_michelin, r.business_status
            FROM restaurants r LEFT JOIN place_raw_responses raw USING (place_id)
            ORDER BY sha256(? || ':' || r.place_id), r.place_id""", [str(config.seed)]

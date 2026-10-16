@@ -184,6 +184,8 @@ def test_eligibility_excludes_closed_guide_and_ordinary_rows_with_audit(tmp_path
     coverage = pd.read_csv(tmp_path / "output" / "interim" / "guide_coverage.csv").set_index("place_id")
     assert coverage.loc["bib", "status"] == "excluded_business_status"
     audit = (tmp_path / "output" / "interim" / "missingness_audit.json").read_text()
+    audit_document = json.loads(audit)
+    assert all(set(group["missing"]) == {"price_range", "average_rating", "review_count", "cuisine"} for group in audit_document["final_panel"])
     assert '"final_panel"' in audit
     assert '"published_reconciliation": "deferred"' in audit
 
@@ -214,3 +216,66 @@ def test_blocked_export_still_audits_available_eligible_data(tmp_path: Path) -> 
     audit = (tmp_path / "output" / "interim" / "missingness_audit.json").read_text()
     assert '"final_panel": null' in audit
     assert '"ordinary_candidate"' in audit
+
+
+def test_export_preserves_stored_price_ranges_in_all_populations_without_mutation(tmp_path: Path) -> None:
+    """Export raw bands/nulls uniformly while retaining price level and stable outputs."""
+    db_path, guide_path, mapping_path = export_fixture(tmp_path)
+    config = load_config(Path("config/pipeline.yaml"), Path("config/features.yaml")).pipeline
+    config = config.model_copy(update={"pools": config.pools.model_copy(update={
+        "ordinary_in_sample_limit": 3, "ordinary_out_of_sample_limit": 3,
+    })})
+    ordinary_ids = [f"ordinary-{index}" for index in range(1, 7)]
+    ranked_ids = sorted(ordinary_ids, key=lambda place_id: (sha256(f"{config.seed}:{place_id}".encode()).hexdigest(), place_id))
+    bands = ("200-400", "2000+", None)
+    expected_ranges = {
+        "star": bands[0], "bib": bands[1], "selected": bands[2],
+        **{place_id: bands[index % 3] for index, place_id in enumerate(ranked_ids)},
+    }
+    with duckdb.connect(str(db_path)) as connection:
+        for place_id in ("selected", "ordinary-4", "ordinary-5", "ordinary-6"):
+            connection.execute(
+                """INSERT INTO restaurants
+                (place_id,name,address,latitude,longitude,rating,review_count,price_level,primary_category,is_michelin,business_status,last_updated)
+                VALUES (?, ?, '1 Road, New Taipei City, Taiwan', 25.0, 121.5, 4.5, 100,
+                        NULL, 'restaurant', false, 'OPERATIONAL', ?)""",
+                [place_id, f"Google {place_id}", datetime(2026, 9, 11)],
+            )
+            raw = json.dumps({
+                "id": place_id, "displayName": {"text": f"Google {place_id}"},
+                "formattedAddress": "1 Road, New Taipei City, Taiwan",
+                "location": {"latitude": 25.0, "longitude": 121.5},
+                "rating": 4.5, "userRatingCount": 100, "primaryType": "restaurant",
+                "businessStatus": "OPERATIONAL",
+            }, sort_keys=True, separators=(",", ":"))
+            connection.execute("INSERT INTO place_raw_responses VALUES (?, ?, ?, ?)", [
+                place_id, raw, sha256(raw.encode()).hexdigest(), datetime(2026, 8, 6),
+            ])
+        for place_id, band in expected_ranges.items():
+            connection.execute("UPDATE restaurants SET price_range=? WHERE place_id=?", [band, place_id])
+    with guide_path.open("a", newline="") as stream:
+        csv.writer(stream).writerow(["Guide selected", "New Taipei, Taiwan", "Selected Restaurants", "https://guide.example/selected"])
+    with mapping_path.open("a", newline="") as stream:
+        csv.writer(stream).writerow(["selected", "https://guide.example/selected"])
+    protected = {path: path.read_bytes() for path in (db_path, guide_path, mapping_path)}
+    output = tmp_path / "range-export"
+    database.export_database_panel(db_path, guide_path, mapping_path, output, config)
+    panel_path = output / "processed" / "labeled_restaurants.csv"
+    panel = pd.read_csv(panel_path).set_index("source_id")
+    assert set(panel.index) == set(expected_ranges)
+    for place_id, expected in expected_ranges.items():
+        actual = panel.loc[place_id, "price_range"]
+        assert pd.isna(actual) if expected is None else actual == expected
+    for ids in (("star", "bib", "selected"), ranked_ids[:3], ranked_ids[3:]):
+        rows = panel.loc[list(ids)]
+        assert set(rows["price_range"].dropna()) == {"200-400", "2000+"}
+        assert rows["price_range"].isna().sum() == 1
+    assert panel.loc[ranked_ids[:3], "group"].eq("in_sample").all()
+    assert panel.loc[ranked_ids[3:], "group"].eq("out_of_sample").all()
+    assert panel.loc[["star", "bib", "selected"], "group"].eq("in_sample").all()
+    assert panel.loc["star", "price_level"] == 2
+    assert pd.isna(panel.loc["bib", "price_level"])
+    first_output = panel_path.read_bytes()
+    database.export_database_panel(db_path, guide_path, mapping_path, output, config)
+    assert panel_path.read_bytes() == first_output
+    assert all(path.read_bytes() == original for path, original in protected.items())

@@ -15,6 +15,7 @@ FEATURE_COLUMNS: tuple[str, ...] = (
     "latitude",
     "longitude",
     "price_level",
+    "price_range",
     "cuisine",
     "average_rating",
     "review_count",
