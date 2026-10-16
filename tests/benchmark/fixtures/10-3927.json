@@ -1,0 +1,60 @@
+{
+  "name": "3927",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "叁酒弍沏-忠孝寓所 三九二七 3927"
+            },
+            "formattedAddress": "No. 14號, Lane 101, Section 4, Zhongxiao E Rd, Guangwu Village, Da’an District, Taipei City, 106",
+            "id": "ChIJLRi9xvirQjQRVDi9XqRV4RQ",
+            "internationalPhoneNumber": "+886 2 2731 7668",
+            "location": {
+              "latitude": 25.042243799999998,
+              "longitude": 121.54796669999998
+            },
+            "nationalPhoneNumber": "02 2731 7668",
+            "primaryType": "chinese_restaurant",
+            "types": [
+              "chinese_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://3927.com.tw/"
+          }
+        ]
+      },
+      "text_query": "3927, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "text": "3927, No. 14號, Lane 101, Section 4, Zhongxiao E Rd"
+            },
+            "formattedAddress": "3927, No. 14號, Lane 101, Section 4, Zhongxiao E Rd, Guangwu Village, Da’an District, Taipei City, 106",
+            "id": "EnAzOTI3LCBOby4gMTTomZ8sIExhbmUgMTAxLCBTZWN0aW9uIDQsIFpob25neGlhbyBFIFJkLCBHdWFuZ3d1IFZpbGxhZ2UsIERh4oCZYW4gRGlzdHJpY3QsIFRhaXBlaSBDaXR5LCBUYWl3YW4gMTA2IiAaHgoWChQKEglFs8fJ2qtCNBG5YYUDAi675hIEMzkyNw",
+            "location": {
+              "latitude": 25.0422448,
+              "longitude": 121.54794389999999
+            },
+            "types": [
+              "subpremise",
+              "street_address"
+            ]
+          }
+        ]
+      },
+      "text_query": "3927, 14, Lane 101, Section 4, Zhongxiao East Road, Taipei, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "10-3927"
+}

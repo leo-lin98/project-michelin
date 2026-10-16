@@ -1,0 +1,66 @@
+{
+  "name": "fumée",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "fumée Yakitori"
+            },
+            "formattedAddress": "10491, Taipei City, Zhongshan District, Kangle Village, Lane 39, Section 2, Zhongshan N Rd, 3號B3",
+            "id": "ChIJPzoQ34GpQjQRqvsYw1SAsZs",
+            "location": {
+              "latitude": 25.054187400000004,
+              "longitude": 121.52423999999999
+            },
+            "primaryType": "yakitori_restaurant",
+            "types": [
+              "yakitori_restaurant",
+              "japanese_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.ihg.com/regent/hotels/us/en/taipei/tperg/hoteldetail/dining"
+          }
+        ]
+      },
+      "text_query": "fumée, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Regent Taipei"
+            },
+            "formattedAddress": "No. 3號, Lane 39, Section 2, Zhongshan N Rd, Kangle Village, Zhongshan District, Taipei City, 104",
+            "id": "ChIJ5ymH9mipQjQRqo6WdCNtP24",
+            "internationalPhoneNumber": "+886 2 2523 8000",
+            "location": {
+              "latitude": 25.054157999999997,
+              "longitude": 121.52428800000001
+            },
+            "nationalPhoneNumber": "02 2523 8000",
+            "primaryType": "hotel",
+            "types": [
+              "hotel",
+              "lodging",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.regenttaiwan.com/"
+          }
+        ]
+      },
+      "text_query": "fumée, B3, Regent Hotel, 3, Lane 39, Section 2, Zhongshan North Road, Zhongshan District, Taipei, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "02-fumée"
+}

@@ -1,0 +1,62 @@
+{
+  "name": "NOBUO",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "NOBUO"
+            },
+            "formattedAddress": "No. 8號, Tai'an St, Wenbei Village, Zhongzheng District, Taipei City, 100022",
+            "id": "ChIJHXEjL_SpQjQRtPqWK5a_D1w",
+            "location": {
+              "latitude": 25.039958799999997,
+              "longitude": 121.5279626
+            },
+            "primaryType": "restaurant",
+            "types": [
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://nobuo.tw/"
+          }
+        ]
+      },
+      "text_query": "NOBUO, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "NOBUO"
+            },
+            "formattedAddress": "No. 8號, Tai'an St, Wenbei Village, Zhongzheng District, Taipei City, 100022",
+            "id": "ChIJHXEjL_SpQjQRtPqWK5a_D1w",
+            "location": {
+              "latitude": 25.039958799999997,
+              "longitude": 121.5279626
+            },
+            "primaryType": "restaurant",
+            "types": [
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://nobuo.tw/"
+          }
+        ]
+      },
+      "text_query": "NOBUO, 8 Tai'an Street, Zhongzheng District, Taipei, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "16-nobuo"
+}

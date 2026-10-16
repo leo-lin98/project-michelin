@@ -1,0 +1,67 @@
+{
+  "name": "Yuu",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "yuu(肉割烹 ゆう-Nikukappou Yuu)"
+            },
+            "formattedAddress": "No. 15號, Alley 33, Lane 216, Section 4, Zhongxiao E Rd, Checeng Village, Da’an District, Taipei City, 10686",
+            "id": "ChIJK5ir-MWrQjQRa9dkvJFzoro",
+            "internationalPhoneNumber": "+886 2 2711 2080",
+            "location": {
+              "latitude": 25.0394874,
+              "longitude": 121.55375579999999
+            },
+            "nationalPhoneNumber": "02 2711 2080",
+            "primaryType": "restaurant",
+            "types": [
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ]
+          }
+        ]
+      },
+      "text_query": "Yuu, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Village | private kitchen ‧ small stack of wine"
+            },
+            "formattedAddress": "No. 10號, Alley 33, Lane 216, Section 4, Zhongxiao E Rd, Checeng Village, Da’an District, Taipei City, 106",
+            "id": "ChIJfWNqV8-rQjQRJAiwfk_LCyg",
+            "internationalPhoneNumber": "+886 2 2711 7272",
+            "location": {
+              "latitude": 25.0392884,
+              "longitude": 121.55348959999999
+            },
+            "nationalPhoneNumber": "02 2711 7272",
+            "primaryType": "taiwanese_restaurant",
+            "types": [
+              "taiwanese_restaurant",
+              "chinese_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.facebook.com/44svbistro/"
+          }
+        ]
+      },
+      "text_query": "Yuu, 15, Alley 33, Lane 216, Section 4, Zhongxiao East Road, Da'an District, Taipei, 106, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "07-yuu"
+}

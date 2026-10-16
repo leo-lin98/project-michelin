@@ -1,0 +1,70 @@
+{
+  "name": "JUNTO",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "JUNTO 同 | 新派粵菜"
+            },
+            "formattedAddress": "2樓, 正旅館 藍, No. 22號, Guanqian Rd, Liming Village, Zhongzheng District, Taipei City, 100",
+            "id": "ChIJSxNePs-pQjQRn3kFHsWNoIQ",
+            "internationalPhoneNumber": "+886 976 684 366",
+            "location": {
+              "latitude": 25.0450783,
+              "longitude": 121.5148545
+            },
+            "nationalPhoneNumber": "0976 684 366",
+            "primaryType": "restaurant",
+            "types": [
+              "restaurant",
+              "bistro",
+              "cantonese_restaurant",
+              "chinese_restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.juntorestaurant.com/"
+          }
+        ]
+      },
+      "text_query": "JUNTO, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "正旅館 藍 The Blue by Just Inn"
+            },
+            "formattedAddress": "No. 22, Guanqian Rd, Zhongzheng District, Taipei City, 100",
+            "id": "ChIJR9rBwR2pQjQR58XpDNWycLc",
+            "internationalPhoneNumber": "+886 2 2370 8008",
+            "location": {
+              "latitude": 25.0450783,
+              "longitude": 121.5148545
+            },
+            "nationalPhoneNumber": "02 2370 8008",
+            "primaryType": "hotel",
+            "types": [
+              "hotel",
+              "hostel",
+              "lodging",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://thebluebyjustinn.mydirectstay.com/"
+          }
+        ]
+      },
+      "text_query": "JUNTO, 2F, The Blue by Just Inn, 22 Guanqian Road, Zhongzheng District, Taipei, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "01-junto"
+}

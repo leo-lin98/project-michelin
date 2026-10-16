@@ -1,0 +1,70 @@
+{
+  "name": "Taïrroir",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Taïrroir"
+            },
+            "formattedAddress": "104053, Taipei City, Zhongshan District, Jintai Village, Lequn 3rd Rd, 299號6樓",
+            "id": "ChIJIduw3BKsQjQR3Gkz01ZqB8s",
+            "internationalPhoneNumber": "+886 2 8501 5500",
+            "location": {
+              "latitude": 25.08278,
+              "longitude": 121.5591771
+            },
+            "nationalPhoneNumber": "02 8501 5500",
+            "primaryType": "taiwanese_restaurant",
+            "types": [
+              "taiwanese_restaurant",
+              "french_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "http://tairroir.com/"
+          }
+        ]
+      },
+      "text_query": "Taïrroir, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Taïrroir"
+            },
+            "formattedAddress": "104053, Taipei City, Zhongshan District, Jintai Village, Lequn 3rd Rd, 299號6樓",
+            "id": "ChIJIduw3BKsQjQR3Gkz01ZqB8s",
+            "internationalPhoneNumber": "+886 2 8501 5500",
+            "location": {
+              "latitude": 25.08278,
+              "longitude": 121.5591771
+            },
+            "nationalPhoneNumber": "02 8501 5500",
+            "primaryType": "taiwanese_restaurant",
+            "types": [
+              "taiwanese_restaurant",
+              "french_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "http://tairroir.com/"
+          }
+        ]
+      },
+      "text_query": "Taïrroir, 6F, 299 Lequn 3rd Road, Zhongshan District, Taipei, 104, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "15-taïrroir"
+}

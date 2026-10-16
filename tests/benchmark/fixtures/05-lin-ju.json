@@ -1,0 +1,67 @@
+{
+  "name": "Lin Ju",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "麟聚"
+            },
+            "formattedAddress": "No. 100號, DunHua N Rd, Zhongzheng Village, Songshan District, Taipei City, 105",
+            "id": "ChIJdzWfNISrQjQRAMML2V8XENY",
+            "internationalPhoneNumber": "+886 2 2712 2700",
+            "location": {
+              "latitude": 25.052567099999997,
+              "longitude": 121.54791230000001
+            },
+            "nationalPhoneNumber": "02 2712 2700",
+            "primaryType": "chinese_restaurant",
+            "types": [
+              "chinese_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "http://www.linju.com.tw/"
+          }
+        ]
+      },
+      "text_query": "Lin Ju, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "zh-TW",
+              "text": "茹曦酒店 ILLUME TAIPEI"
+            },
+            "formattedAddress": "No. 100號, DunHua N Rd, Zhongzheng Village, Songshan District, Taipei City, 105020",
+            "id": "ChIJTSdlQZSrQjQRTGf6AJggr8c",
+            "internationalPhoneNumber": "+886 2 2719 8399",
+            "location": {
+              "latitude": 25.0526507,
+              "longitude": 121.54826209999999
+            },
+            "nationalPhoneNumber": "02 2719 8399",
+            "primaryType": "hotel",
+            "types": [
+              "hotel",
+              "lodging",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://www.theillumehotel.com/"
+          }
+        ]
+      },
+      "text_query": "Lin Ju, 100 Dunhua North Road, Shongshan District, Taipei, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "05-lin-ju"
+}

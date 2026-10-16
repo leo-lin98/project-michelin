@@ -1,0 +1,11 @@
+row_id,name,expected_outcome,expected_place_id,evidence
+07-yuu,Yuu,place_id,ChIJK5ir-MWrQjQRa9dkvJFzoro,phone exact + house number 15 + name 'yuu'; the #10 candidate is a different restaurant
+08-rong-ju,Rong Ju,place_id,ChIJs-PERFKrQjQRCTx394uPC7U,exact name 'Rong Ju' + chinese_restaurant type at Capella; distinct from the Capella hotel candidate
+09-circum,Circum-,place_id,ChIJSR-A2kCpQjQRurjUm98-Rac,"exact name 'Circum-' at the Regent address; the 12km distance is a corrupt source coordinate, not a real mismatch; other candidate is the Regent hotel"
+10-3927,3927,place_id,ChIJLRi9xvirQjQRVDi9XqRV4RQ,name contains '3927' + website 3927.com.tw; the other result is a non-business address geocode
+11-yu-yu-1969,Yu Yu 1969,place_id,ChIJUVfSk46rQjQRjSYEdTmKW8Q,phone exact + address #48 Liaoning + name 有有1969; the 二店 candidate is a separate branch
+12-kur,KUR,place_id,ChIJ5TE_dLKrQjQR84JuWHrbnFE,"exact name 'KUR' + website kur.tw, 0m; the other candidate (logy) is an unrelated restaurant 4.9km away"
+15-taïrroir,Taïrroir,place_id,ChIJIduw3BKsQjQR3Gkz01ZqB8s,exact name + website tairroir.com + phone + 18m
+16-nobuo,NOBUO,place_id,ChIJHXEjL_SpQjQRtPqWK5a_D1w,exact name + website nobuo.tw + 14m
+18-ya-ge,Ya Ge,place_id,ChIJCToTHearQjQR4sFNUhOOeU8,"exact name 'Ya Ge', cantonese_restaurant in Mandarin Oriental; distinct from the Mandarin Oriental hotel candidate"
+20-lin,Lin,place_id,ChIJsfXT_GmrQjQRtoFOTaD_L1g,name 'Lin' is the core of 'Lin Restaurant' + phone 02-2368-7868 exact + 1m

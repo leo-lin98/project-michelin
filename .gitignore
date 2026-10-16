@@ -5,9 +5,17 @@ __pycache__/
 .pytest_cache/
 
 # Local data and downloaded/cached source inputs must not be committed.
-data/
+/data/
 *.csv
 *.tsv
 *.parquet
 *.feather
 *.jsonl
+
+# Local cutoff experiment results.
+/experiments/
+
+# Local plans and execution reports.
+/michelin-plan.md
+/docs/superpowers/plans/
+/reports/

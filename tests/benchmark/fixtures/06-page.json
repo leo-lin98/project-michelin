@@ -1,0 +1,88 @@
+{
+  "name": "Page",
+  "queries": [
+    {
+      "query_mode": "simple",
+      "response": {
+        "places": [
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Restaurant Page"
+            },
+            "formattedAddress": "10463, Taipei City, Zhongshan District, Dazhi Village, Alley 20, Lane 595, Beian Rd, 4號1樓",
+            "id": "ChIJyQU1ZgWsQjQR5kN2WtEzKtU",
+            "internationalPhoneNumber": "+886 2 2532 8003",
+            "location": {
+              "latitude": 25.08184,
+              "longitude": 121.547774
+            },
+            "nationalPhoneNumber": "02 2532 8003",
+            "primaryType": "western_restaurant",
+            "types": [
+              "western_restaurant",
+              "restaurant",
+              "food",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "http://www.restaurant-page.com/"
+          },
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "Michael Page Recruitment Agency, Taipei"
+            },
+            "formattedAddress": "8F-1, No. 36, Songren Rd, Xicun Village, Xinyi District, Taipei City, 110",
+            "id": "ChIJXzEaq7urQjQRUjhK-rFR6aI",
+            "internationalPhoneNumber": "+886 2 8729 8200",
+            "location": {
+              "latitude": 25.0387702,
+              "longitude": 121.5681125
+            },
+            "nationalPhoneNumber": "02 8729 8200",
+            "primaryType": "service",
+            "types": [
+              "employment_agency",
+              "consultant",
+              "local_government_office",
+              "government_office",
+              "point_of_interest",
+              "service",
+              "establishment"
+            ],
+            "websiteUri": "https://www.michaelpage.com.tw/?utm_source=google&utm_medium=organic&utm_campaign=gmb&utm_content=Taiwan"
+          },
+          {
+            "displayName": {
+              "languageCode": "en",
+              "text": "FAURÉ LE PAGE Shin Kong Mitsukoshi Taipei Xinyi A4 Store"
+            },
+            "formattedAddress": "110, Taipei City, Xinyi District, Xingya Village, Songgao Rd, 19號2樓",
+            "id": "ChIJh5uVyIqrQjQRDQ2H6sM58iE",
+            "internationalPhoneNumber": "+886 2 2723 2217",
+            "location": {
+              "latitude": 25.039692199999998,
+              "longitude": 121.56648369999999
+            },
+            "nationalPhoneNumber": "02 2723 2217",
+            "primaryType": "store",
+            "types": [
+              "store",
+              "point_of_interest",
+              "establishment"
+            ],
+            "websiteUri": "https://int.faurelepage.com/"
+          }
+        ]
+      },
+      "text_query": "Page, Taipei, Taiwan"
+    },
+    {
+      "query_mode": "strict",
+      "response": {},
+      "text_query": "Page, 4, Alley 20, Lane 595, Bei'an Road, Zhongshan District, Taipei, 104, Taiwan, Taipei, Taiwan"
+    }
+  ],
+  "row_id": "06-page"
+}

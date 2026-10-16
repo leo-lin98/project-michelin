@@ -1,0 +1,12 @@
+logistic_c: 1.0
+logistic_max_iter: 2000
+logistic_tolerance: 0.00000001
+boosting_learning_rate: 0.1
+boosting_base_rounds: 20
+boosting_capacity_rounds: 100
+boosting_depth: 2
+overfit_rows: 12
+watchlist_rows: 6
+prediction_rounds: 100
+calibration_c: 1.0
+calibration_bins: 10
